@@ -867,7 +867,7 @@ def parse_args():
     p.add_argument("--db", default="")
     p.add_argument("--workers", type=int, default=DEFAULT_WORKERS)
     return p.parse_args()
-
+    
 if __name__ == "__main__":
     args = parse_args()
     run_file(args.input_file, args.outdir, args.smtp, args.smtp_from, args.db, args.workers)

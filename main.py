@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from security import get_current_user               # <-- use auth
 
 from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, status, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -22,9 +22,34 @@ import schemas
 import security
 from database import SessionLocal, engine, get_db
 from app import validate_single_async, load_emails_from_csv, validate_many_async, write_outputs
+import os, secrets
+from urllib.parse import urlencode
+import httpx
+from fastapi import Request, Depends, HTTPException
+from fastapi.responses import RedirectResponse
+from sqlalchemy.orm import Session
+from dotenv import load_dotenv
+import dns.resolver
+
+def has_mx(domain: str) -> bool:
+    try:
+        answers = dns.resolver.resolve(domain, "MX")
+        return any(answers)
+    except Exception:
+        return False
+
+load_dotenv() 
+
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+
 
 # This creates the 'users' table in your database if it doesn't exist
 models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(title="Email Verifier API", version="3.0")
 
@@ -51,7 +76,57 @@ app.add_middleware(
     allow_headers=["*"],           # allows Authorization header too
 )
 
+# --- LIGHTWEIGHT public email check (no auth, no credits)
+@app.get("/utils/check-email")
+async def utils_check_email(email: str):
+    """
+    Quick email check for signup:
+    - validates syntax
+    - runs domain-level disposable detection (fast path: no SMTP)
+    - returns minimal flags for UI
+    """
+    try:
+        res = await validate_single_async(
+            email=email,
+            smtp_from="noreply@example.com",
+            db_path=None,
+            smtp_probe_flag=False,   # FAST: no SMTP handshake
+        )
+        return {
+            "ok": True,
+            "email": res.get("email"),
+            "syntax_ok": bool(res.get("syntax_ok")),
+            "domain": res.get("domain"),
+            "disposable": bool(res.get("disposable")),
+            "reason": res.get("reason") or (", ".join(res.get("notes") or []) or None),
+        }
+    except Exception as ex:
+        return JSONResponse(
+            status_code=200,
+            content={"ok": False, "error": str(ex), "disposable": None, "syntax_ok": None},
+        )
+
 # --- HELPERS ---
+
+import re
+
+def validate_password_strength(password: str):
+    """
+    Ensures password meets minimum security requirements:
+    - At least 8 characters
+    - Contains uppercase, lowercase, number, and special character
+    """
+    if len(password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 characters long.")
+    if not re.search(r"[A-Z]", password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one uppercase letter.")
+    if not re.search(r"[a-z]", password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one lowercase letter.")
+    if not re.search(r"[0-9]", password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one number.")
+    if not re.search(r"[@$!%*?&]", password):
+        raise HTTPException(status_code=400, detail="Password must contain at least one special character (@, $, !, %, *, ?, &).")
+
 
 def ensure_user_credits(db: Session, user_id: int) -> "models.UserCredits":
     uc = db.query(models.UserCredits).filter(models.UserCredits.user_id == user_id).first()
@@ -126,6 +201,129 @@ def record_result(db: Session, user_id: int, res: dict) -> int:
 async def root():
     return {"status": "ok", "message": "Welcome to the Email Verifier API"}
 
+# ---------- GOOGLE ----------
+@app.get("/oauth/google/start")
+async def oauth_google_start(request: Request):
+    redirect_uri = str(request.url_for("oauth_google_callback"))
+    params = {
+        "client_id": GOOGLE_CLIENT_ID,
+        "response_type": "code",
+        "redirect_uri": redirect_uri,
+        "scope": "openid email profile",
+        "access_type": "offline",
+        "prompt": "consent",
+    }
+    auth_url = "https://accounts.google.com/o/oauth2/v2/auth?" + urlencode(params)
+    return RedirectResponse(auth_url)
+
+@app.get("/oauth/google/callback", name="oauth_google_callback")
+async def oauth_google_callback(request: Request, db: Session = Depends(get_db)):
+    code = request.query_params.get("code")
+    if not code:
+        raise HTTPException(400, "Missing code")
+
+    redirect_uri = str(request.url_for("oauth_google_callback"))
+
+    async with httpx.AsyncClient(timeout=15) as client:
+        token_data = {
+            "code": code,
+            "client_id": GOOGLE_CLIENT_ID,
+            "client_secret": GOOGLE_CLIENT_SECRET,
+            "redirect_uri": redirect_uri,
+            "grant_type": "authorization_code",
+        }
+        tok = (await client.post("https://oauth2.googleapis.com/token", data=token_data)).json()
+        userinfo = (await client.get(
+            "https://openidconnect.googleapis.com/v1/userinfo",
+            headers={"Authorization": f"Bearer {tok.get('access_token')}"},
+        )).json()
+
+    email = (userinfo.get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(400, "Google did not return an email")
+
+    first_name = userinfo.get("given_name") or ""
+    last_name  = userinfo.get("family_name") or ""
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        random_pw = secrets.token_urlsafe(24)
+        hashed = security.get_password_hash(random_pw)
+        user = models.User(email=email, hashed_password=hashed, first_name=first_name, last_name=last_name)
+        db.add(user); db.commit(); db.refresh(user)
+        # seed credits if your register endpoint does this
+        if not db.query(models.UserCredits).filter(models.UserCredits.user_id == user.id).first():
+            db.add(models.UserCredits(user_id=user.id, remaining_credits=250, used_credits=0)); db.commit()
+
+    jwt_token = security.create_access_token(data={"sub": user.email})
+    return RedirectResponse(f"{FRONTEND_ORIGIN}/oauth/callback#token={jwt_token}")
+
+# ---------- GITHUB ----------
+@app.get("/oauth/github/start")
+async def oauth_github_start(request: Request):
+    redirect_uri = str(request.url_for("oauth_github_callback"))
+    params = {
+        "client_id": GITHUB_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "scope": "user:email",
+        "allow_signup": "true",
+    }
+    auth_url = "https://github.com/login/oauth/authorize?" + urlencode(params)
+    return RedirectResponse(auth_url)
+
+@app.get("/oauth/github/callback", name="oauth_github_callback")
+async def oauth_github_callback(request: Request, db: Session = Depends(get_db)):
+    code = request.query_params.get("code")
+    if not code:
+        raise HTTPException(400, "Missing code")
+
+    redirect_uri = str(request.url_for("oauth_github_callback"))
+
+    async with httpx.AsyncClient(timeout=15) as client:
+        # Exchange code -> token
+        headers = {"Accept": "application/json"}
+        data = {
+            "client_id": GITHUB_CLIENT_ID,
+            "client_secret": GITHUB_CLIENT_SECRET,
+            "code": code,
+            "redirect_uri": redirect_uri,
+        }
+        tok = (await client.post("https://github.com/login/oauth/access_token", data=data, headers=headers)).json()
+
+        # Get user profile + emails
+        me = (await client.get("https://api.github.com/user",
+                               headers={"Authorization": f"Bearer {tok.get('access_token')}",
+                                        "Accept": "application/vnd.github+json"})).json()
+        em = (await client.get("https://api.github.com/user/emails",
+                               headers={"Authorization": f"Bearer {tok.get('access_token')}",
+                                        "Accept": "application/vnd.github+json"})).json()
+
+    # pick primary email (fallback to first)
+    email_obj = next((x for x in em if x.get("primary")), (em[0] if isinstance(em, list) and em else {}))
+    email = (email_obj.get("email") or "").strip().lower()
+    if not email:
+        raise HTTPException(400, "GitHub did not return an email")
+
+    name = (me.get("name") or "").strip()
+    if name and " " in name:
+        first_name, last_name = name.split(" ", 1)
+    else:
+        first_name = name or (email.split("@")[0] if email else "User")
+        last_name = ""
+
+    user = db.query(models.User).filter(models.User.email == email).first()
+    if not user:
+        random_pw = secrets.token_urlsafe(24)
+        hashed = security.get_password_hash(random_pw)
+        user = models.User(email=email, hashed_password=hashed, first_name=first_name, last_name=last_name)
+        db.add(user); db.commit(); db.refresh(user)
+        if not db.query(models.UserCredits).filter(models.UserCredits.user_id == user.id).first():
+            db.add(models.UserCredits(user_id=user.id, remaining_credits=250, used_credits=0)); db.commit()
+
+    jwt_token = security.create_access_token(data={"sub": user.email})
+    return RedirectResponse(f"{FRONTEND_ORIGIN}/oauth/callback#token={jwt_token}")
+
+
 # --- AUTHENTICATION ENDPOINTS ---
 
 @app.post("/register", response_model=schemas.User)
@@ -133,7 +331,7 @@ async def create_user(
     first_name: str = Form(...),
     last_name: str = Form(...),
     email: str = Form(...),
-    password: str = Form(...),
+    password: str = Form(...),  
     db: Session = Depends(get_db)
 ):
     try:
@@ -160,6 +358,9 @@ async def create_user(
         except Exception as e:
             print(f"Database query error: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Database query error: {str(e)}")
+        
+        # Validate password strength
+        validate_password_strength(password)
 
         # Create new user
         try:
@@ -451,3 +652,46 @@ def get_me(current_user: models.User = Depends(security.get_current_user)):
         "first_name": current_user.first_name,
         "last_name": current_user.last_name,
     }
+
+# --- Local-only OAuth start (dev shim) ---
+# The frontend calls /oauth/{provider}/start?next=<frontend>/oauth/callback
+# We ensure `next` points to localhost/127.0.0.1 and then redirect to
+# <next>#token=<jwt>, so OAuthCallback.jsx can complete sign-in locally.
+
+@app.get("/oauth/{provider}/start")
+def oauth_start(provider: str, next: str = "", db: Session = Depends(get_db)):
+    from urllib.parse import urlparse
+
+    target = next or f"{FRONTEND_ORIGIN}/oauth/callback"
+    parsed = urlparse(target)
+    if parsed.scheme not in ("http", "https") or parsed.hostname not in ("localhost", "127.0.0.1"):
+        return JSONResponse(status_code=400, content={"error": "Local OAuth allowed only for localhost/127.0.0.1"})
+
+    try:
+        # Create or fetch a local dev user so the dashboard can load profile/name/credits
+        email = f"dev_{provider}@example.com"
+        first, last = (provider.capitalize(), "User")
+        # Upsert user for dev auth
+        user = (
+            db.query(models.User).filter(models.User.email == email).first()
+        )
+        if not user:
+            pw = security.get_password_hash(secrets.token_urlsafe(16))
+            user = models.User(email=email, hashed_password=pw, first_name=first, last_name=last)
+            db.add(user); db.commit(); db.refresh(user)
+            # ensure credits row exists
+            ensure_user_credits(db, user.id)
+        else:
+            changed = False
+            if not getattr(user, 'first_name', None):
+                user.first_name = first; changed = True
+            if not getattr(user, 'last_name', None):
+                user.last_name = last; changed = True
+            if changed:
+                db.add(user); db.commit(); db.refresh(user)
+
+        token = security.create_access_token(data={"sub": email})
+    except Exception:
+        token = "dev-token"
+
+    return RedirectResponse(url=f"{target}#token={token}", status_code=302)

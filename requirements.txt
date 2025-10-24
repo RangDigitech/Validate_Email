@@ -8,3 +8,5 @@ nameparser
 sqlalchemy>=1.4,<3
 python-jose[cryptography]
 psycopg2-binary>=2.9.9
+httpx>=0.27
+python-dotenv>=1.0
