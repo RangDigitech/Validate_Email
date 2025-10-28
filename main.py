@@ -15,6 +15,8 @@ from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, HTML
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from json import loads as _json_loads
+import unicodedata
 
 # Local module imports
 import models
@@ -30,6 +32,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 import dns.resolver
+import re
 
 def has_mx(domain: str) -> bool:
     try:
@@ -144,6 +147,20 @@ def charge_credits(db: Session, user_id: int, units: int) -> None:
     uc.remaining_credits -= units
     uc.used_credits += units
     db.add(uc); db.commit()
+
+def compute_char_stats(local_part: str):
+    nums = sum(c.isdigit() for c in local_part)
+    alphas = sum(c.isalpha() for c in local_part)
+    # “Unicode symbols” = characters that are not alnum and not ASCII punctuation/underscore
+    # This is a pragmatic definition; adjust if you track a different meaning.
+    unicode_syms = 0
+    for c in local_part:
+        if c.isalnum() or c in "._-+":
+            continue
+        # count anything else that isn’t a space as a symbol
+        if not c.isspace():
+            unicode_syms += 1
+    return nums, alphas, unicode_syms
 
 def record_result(db: Session, user_id: int, res: dict) -> int:
     """Insert into email_verifications + upsert emails_checked. Returns verification id."""
@@ -323,9 +340,7 @@ async def oauth_github_callback(request: Request, db: Session = Depends(get_db))
     jwt_token = security.create_access_token(data={"sub": user.email})
     return RedirectResponse(f"{FRONTEND_ORIGIN}/oauth/callback#token={jwt_token}")
 
-
 # --- AUTHENTICATION ENDPOINTS ---
-
 @app.post("/register", response_model=schemas.User)
 async def create_user(
     first_name: str = Form(...),
@@ -443,7 +458,13 @@ async def single_email_validation(
     res = await validate_single_async(email, "noreply@example.com", None, smtp)
     res["deliverable"] = (res.get("final_status") == "valid")
     res["state"] = res.get("state")
-
+    # derive counts if missing
+    lp = (res.get("local_part") or (res.get("email","").split("@")[0] if res.get("email") else ""))
+    if "numerical_chars" not in res or "alphabetical_chars" not in res or "unicode_symbols" not in res:
+        n, a, u = compute_char_stats(lp)
+        res.setdefault("numerical_chars", n)
+        res.setdefault("alphabetical_chars", a)
+        res.setdefault("unicode_symbols", u)
     ver_id = record_result(db, current_user.id, res)
     return {"result": res, "verification_id": ver_id}
 
@@ -494,6 +515,12 @@ async def file_validation(
             except Exception:
                 r["deliverable"] = False
             # Persist each row
+            lp = (r.get("local_part") or (r.get("email","").split("@")[0] if r.get("email") else ""))
+            if "numerical_chars" not in r or "alphabetical_chars" not in r or "unicode_symbols" not in r:
+                n, a, u = compute_char_stats(lp)
+                r.setdefault("numerical_chars", n)
+                r.setdefault("alphabetical_chars", a)
+                r.setdefault("unicode_symbols", u)
             ver_id = record_result(db, current_user.id, r)
             # Link to bulk job
             db.add(models.BulkItem(job_id=jobid, verification_id=ver_id))
@@ -645,6 +672,63 @@ def get_bulk_job(
             for v in ver_rows
         ],
     }
+
+
+@app.get("/verifications/{ver_id}")
+def get_verification(
+    ver_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(security.get_current_user),
+):
+    v = (
+        db.query(models.EmailVerification)
+        .filter(models.EmailVerification.id == ver_id,
+                models.EmailVerification.user_id == current_user.id)
+        .first()
+    )
+    if not v:
+        raise HTTPException(status_code=404, detail="Verification not found")
+
+    # Parse the raw result we stored at verify time
+    raw = {}
+    try:
+        raw = _json_loads(v.result_json or "{}")
+    except Exception:
+        raw = {}
+
+    # Return a merged object: indexed summary + raw fields frontends expect
+    return {
+        "id": v.id,
+        "email": v.email,
+        "domain": v.domain,
+        "local_part": v.local_part,
+        "final_status": v.status,          # "valid"/"risky"/"invalid"
+        "state": v.state,                  # "Deliverable"/"Risky"/"Undeliverable"
+        "reason": v.reason,
+        "score": v.score,
+        "free": v.free,
+        "role": v.role,
+        "disposable": v.disposable,
+        "accept_all": v.accept_all,
+        "smtp_provider": v.smtp_provider,
+        "mx_record": v.mx_record,
+        "catch_all": v.catch_all,
+        "smtp_ok": v.smtp_ok,
+        "created_at": v.created_at,
+        # Pass through any detailed attributes your UI renders:
+        "numerical_characters": raw.get("numerical_characters"),
+        "alphabetical_characters": raw.get("alphabetical_characters"),
+        "unicode_symbols": raw.get("unicode_symbols"),
+        "mailbox_full": raw.get("mailbox_full"),
+        "no_reply": raw.get("no_reply"),
+        "secure_email_gateway": raw.get("secure_email_gateway"),
+        "implicit_mx_record": raw.get("implicit_mx_record"),
+        # keep entire raw object in case UI needs more:
+        "raw": raw,
+    }
+
+
+
 @app.get("/me")
 def get_me(current_user: models.User = Depends(security.get_current_user)):
     return {
