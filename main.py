@@ -112,6 +112,32 @@ async def utils_check_email(email: str):
 # --- HELPERS ---
 
 import re
+# --- DUPLICATE / NORMALIZATION HELPERS ---
+
+def normalize_email_addr(raw: str) -> str:
+    """Trim and lower-case the address for de-dupe checks."""
+    return (raw or "").strip().lower()
+
+def has_user_checked_email(db: Session, user_id: int, email: str) -> bool:
+    """True if this user has ever verified this exact email before."""
+    norm = normalize_email_addr(email)
+    return db.query(models.EmailsChecked.id).filter(
+        models.EmailsChecked.user_id == user_id,
+        models.EmailsChecked.email == norm
+    ).first() is not None
+
+def get_existing_emails_set(db: Session, user_id: int, emails: list[str]) -> set[str]:
+    """Fetch all already-seen emails for this user from a provided list."""
+    if not emails:
+        return set()
+    normalized = [normalize_email_addr(e) for e in emails if e]
+    rows = (
+        db.query(models.EmailsChecked.email)
+        .filter(models.EmailsChecked.user_id == user_id)
+        .filter(models.EmailsChecked.email.in_(normalized))
+        .all()
+    )
+    return {r[0] for r in rows}
 
 def validate_password_strength(password: str):
     """
@@ -444,7 +470,6 @@ async def login_for_access_token(request: Request, db: Session = Depends(get_db)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Login failed")
 
 # --- EMAIL VERIFICATION ENDPOINTS ---
-
 @app.post("/validate-email")
 async def single_email_validation(
     email: str = Form(...),
@@ -452,22 +477,27 @@ async def single_email_validation(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(security.get_current_user)
 ):
-    # 1 credit per single check
-    charge_credits(db, current_user.id, 1)
+    norm_email = normalize_email_addr(email)
 
-    res = await validate_single_async(email, "noreply@example.com", None, smtp)
+    # Decide if we need to charge (only if user hasn't checked this email before)
+    already_checked = has_user_checked_email(db, current_user.id, norm_email)
+    credits_charged = 0
+    if not already_checked:
+        charge_credits(db, current_user.id, 1)
+        credits_charged = 1
+
+    # Run verification (you can later add a cache shortcut if you want)
+    res = await validate_single_async(norm_email, "noreply@example.com", None, smtp)
     res["deliverable"] = (res.get("final_status") == "valid")
     res["state"] = res.get("state")
-    # derive counts if missing
-    lp = (res.get("local_part") or (res.get("email","").split("@")[0] if res.get("email") else ""))
-    if "numerical_chars" not in res or "alphabetical_chars" not in res or "unicode_symbols" not in res:
-        n, a, u = compute_char_stats(lp)
-        res.setdefault("numerical_chars", n)
-        res.setdefault("alphabetical_chars", a)
-        res.setdefault("unicode_symbols", u)
-    ver_id = record_result(db, current_user.id, res)
-    return {"result": res, "verification_id": ver_id}
 
+    ver_id = record_result(db, current_user.id, res)
+    return {
+        "result": res,
+        "verification_id": ver_id,
+        "credits_charged": credits_charged,
+        "duplicate": already_checked
+    }
 @app.post("/validate-file")
 async def file_validation(
     file: UploadFile = File(...),
@@ -489,14 +519,21 @@ async def file_validation(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
 
-    emails = load_emails_from_csv(tmp_input_path)
+    # Load emails; normalize and keep original order
+    raw_emails = load_emails_from_csv(tmp_input_path)
+    emails = [normalize_email_addr(e) for e in raw_emails if e]
     if not emails:
         raise HTTPException(status_code=400, detail="No emails found in the uploaded CSV file.")
 
-    # Charge N credits for N emails
-    charge_credits(db, current_user.id, len(emails))
+    # Determine which ones are first-time for this user
+    existing = get_existing_emails_set(db, current_user.id, emails)
+    to_charge = [e for e in set(emails) if e not in existing]  # charge unique new emails only
+    credits_to_charge = len(to_charge)
 
-    # Create a BulkJob row so we can group and hide these from recent singles
+    if credits_to_charge > 0:
+        charge_credits(db, current_user.id, credits_to_charge)
+
+    # Make a bulk job record
     job_name = (name or os.path.splitext(file.filename or "")[0] or f"Upload {datetime.utcnow().date()}")[:120]
     bulk_job = models.BulkJob(
         id=jobid,
@@ -507,22 +544,16 @@ async def file_validation(
     db.add(bulk_job)
     db.commit(); db.refresh(bulk_job)
 
+    # Run validations (you could skip re-validating exact duplicates and reuse cache later if desired)
     try:
         results = await validate_many_async(emails, "noreply@example.com", smtp, workers)
+
         for r in results:
             try:
                 r["deliverable"] = bool(r.get("final_status") == "valid")
             except Exception:
                 r["deliverable"] = False
-            # Persist each row
-            lp = (r.get("local_part") or (r.get("email","").split("@")[0] if r.get("email") else ""))
-            if "numerical_chars" not in r or "alphabetical_chars" not in r or "unicode_symbols" not in r:
-                n, a, u = compute_char_stats(lp)
-                r.setdefault("numerical_chars", n)
-                r.setdefault("alphabetical_chars", a)
-                r.setdefault("unicode_symbols", u)
             ver_id = record_result(db, current_user.id, r)
-            # Link to bulk job
             db.add(models.BulkItem(job_id=jobid, verification_id=ver_id))
         db.commit()
 
@@ -536,6 +567,8 @@ async def file_validation(
         "name": job_name,
         "count": len(results),
         "results": results,
+        "credits_charged": credits_to_charge,
+        "duplicates_in_upload": len([e for e in emails if e in existing]),
         "files": {
             "results_json": f"/download/{jobid}/results.json",
             "results_csv": f"/download/{jobid}/results.csv",
