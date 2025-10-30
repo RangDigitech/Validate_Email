@@ -33,6 +33,8 @@ from sqlalchemy.orm import Session
 from dotenv import load_dotenv
 import dns.resolver
 import re
+from datetime import datetime, timedelta, timezone
+from sqlalchemy import func, and_, desc
 
 def has_mx(domain: str) -> bool:
     try:
@@ -43,6 +45,7 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
 FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
@@ -66,7 +69,8 @@ origins = [
     "http://127.0.0.1:5173",
     "https://127.0.0.1:5173",
     "http://127.0.0.1:8000",
-    "https://127.0.0.1:8000"
+    "https://127.0.0.1:8000",
+    # "https://rangdigitech.net"
 ]
 
 # --- CORRECT AND FINAL CORS CONFIGURATION ---
@@ -112,6 +116,7 @@ async def utils_check_email(email: str):
 # --- HELPERS ---
 
 import re
+
 # --- DUPLICATE / NORMALIZATION HELPERS ---
 
 def normalize_email_addr(raw: str) -> str:
@@ -139,6 +144,22 @@ def get_existing_emails_set(db: Session, user_id: int, emails: list[str]) -> set
     )
     return {r[0] for r in rows}
 
+def compute_char_stats(local_part: str):
+    nums = sum(c.isdigit() for c in local_part)
+    alphas = sum(c.isalpha() for c in local_part)
+    # "Unicode symbols" = characters that are not alnum and not ASCII punctuation/underscore
+    # This is a pragmatic definition; adjust if you track a different meaning.
+    unicode_syms = 0
+    for c in local_part:
+        if c.isalnum() or c in "._-+":
+            continue
+        # count anything else that isn't a space as a symbol
+        if not c.isspace():
+            unicode_syms += 1
+    return nums, alphas, unicode_syms
+
+
+
 def validate_password_strength(password: str):
     """
     Ensures password meets minimum security requirements:
@@ -161,32 +182,35 @@ def ensure_user_credits(db: Session, user_id: int) -> "models.UserCredits":
     uc = db.query(models.UserCredits).filter(models.UserCredits.user_id == user_id).first()
     if not uc:
         uc = models.UserCredits(user_id=user_id, remaining_credits=0, used_credits=0)
-        db.add(uc)
-        db.commit(); db.refresh(uc)
+        db.add(uc); db.commit(); db.refresh(uc)
     return uc
 
-def charge_credits(db: Session, user_id: int, units: int) -> None:
-    """Subtract credits atomically; raise 402 if not enough."""
+def _ledger_add(db: Session, user_id: int, kind: str, units: int, source: str = None, ref: str = None):
+    """Internal: write one ledger row (positive or negative)."""
+    row = models.CreditLedger(user_id=user_id, kind=kind, units=units, source=source, ref=ref)
+    db.add(row)
+    db.commit()
+
+def add_credits(db: Session, user_id: int, units: int, source: str = "system/topup"):
+    """Increase balance and write a +ledger row."""
+    uc = ensure_user_credits(db, user_id)
+    uc.remaining_credits += units
+    db.add(uc); db.commit()
+    _ledger_add(db, user_id, kind="topup", units=units, source=source)
+
+def charge_credits(db: Session, user_id: int, units: int, kind: str, source: str = None, ref: str = None):
+    """
+    Spend credits atomically; units is the number of credits to deduct (positive int).
+    Writes a -ledger row with the provided kind ('single'|'bulk'|'api'|'other').
+    """
     uc = ensure_user_credits(db, user_id)
     if uc.remaining_credits < units:
         raise HTTPException(status_code=402, detail="Insufficient credits")
     uc.remaining_credits -= units
     uc.used_credits += units
     db.add(uc); db.commit()
+    _ledger_add(db, user_id, kind=kind, units=-units, source=source, ref=ref)
 
-def compute_char_stats(local_part: str):
-    nums = sum(c.isdigit() for c in local_part)
-    alphas = sum(c.isalpha() for c in local_part)
-    # “Unicode symbols” = characters that are not alnum and not ASCII punctuation/underscore
-    # This is a pragmatic definition; adjust if you track a different meaning.
-    unicode_syms = 0
-    for c in local_part:
-        if c.isalnum() or c in "._-+":
-            continue
-        # count anything else that isn’t a space as a symbol
-        if not c.isspace():
-            unicode_syms += 1
-    return nums, alphas, unicode_syms
 
 def record_result(db: Session, user_id: int, res: dict) -> int:
     """Insert into email_verifications + upsert emails_checked. Returns verification id."""
@@ -366,7 +390,9 @@ async def oauth_github_callback(request: Request, db: Session = Depends(get_db))
     jwt_token = security.create_access_token(data={"sub": user.email})
     return RedirectResponse(f"{FRONTEND_ORIGIN}/oauth/callback#token={jwt_token}")
 
+
 # --- AUTHENTICATION ENDPOINTS ---
+
 @app.post("/register", response_model=schemas.User)
 async def create_user(
     first_name: str = Form(...),
@@ -419,14 +445,8 @@ async def create_user(
             print("Refreshing user object...")
             db.refresh(db_user)
             FREE_SIGNUP_CREDITS = 250
-            existing_credits = db.query(models.UserCredits).filter(models.UserCredits.user_id == db_user.id).first()
-            if not existing_credits:
-                db.add(models.UserCredits(
-                    user_id=db_user.id,
-                    remaining_credits=FREE_SIGNUP_CREDITS,
-                    used_credits=0
-                ))
-                db.commit()
+            add_credits(db, db_user.id, FREE_SIGNUP_CREDITS, source="signup_bonus")
+
             print("User successfully created")
             return db_user
         except Exception as db_error:
@@ -470,6 +490,7 @@ async def login_for_access_token(request: Request, db: Session = Depends(get_db)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Login failed")
 
 # --- EMAIL VERIFICATION ENDPOINTS ---
+
 @app.post("/validate-email")
 async def single_email_validation(
     email: str = Form(...),
@@ -483,13 +504,21 @@ async def single_email_validation(
     already_checked = has_user_checked_email(db, current_user.id, norm_email)
     credits_charged = 0
     if not already_checked:
-        charge_credits(db, current_user.id, 1)
+        charge_credits(db, current_user.id, 1, kind="single", source="POST /validate-email")
         credits_charged = 1
-
+    
+    charge_credits(db, current_user.id, 1, kind="single", source="POST /validate-email")
     # Run verification (you can later add a cache shortcut if you want)
     res = await validate_single_async(norm_email, "noreply@example.com", None, smtp)
     res["deliverable"] = (res.get("final_status") == "valid")
     res["state"] = res.get("state")
+
+    lp = (res.get("local_part") or "").strip()
+    if lp:
+        nums, alphas, unic = compute_char_stats(lp)
+        res["numerical_characters"] = nums
+        res["alphabetical_characters"] = alphas
+        res["unicode_symbols"] = unic
 
     ver_id = record_result(db, current_user.id, res)
     return {
@@ -498,6 +527,7 @@ async def single_email_validation(
         "credits_charged": credits_charged,
         "duplicate": already_checked
     }
+
 @app.post("/validate-file")
 async def file_validation(
     file: UploadFile = File(...),
@@ -531,7 +561,7 @@ async def file_validation(
     credits_to_charge = len(to_charge)
 
     if credits_to_charge > 0:
-        charge_credits(db, current_user.id, credits_to_charge)
+        charge_credits(db, current_user.id, credits_to_charge, kind="bulk", source="POST /validate-file", ref=jobid)
 
     # Make a bulk job record
     job_name = (name or os.path.splitext(file.filename or "")[0] or f"Upload {datetime.utcnow().date()}")[:120]
@@ -553,6 +583,13 @@ async def file_validation(
                 r["deliverable"] = bool(r.get("final_status") == "valid")
             except Exception:
                 r["deliverable"] = False
+            lp = (r.get("local_part") or "").strip()
+            if lp:
+                nums, alphas, unic = compute_char_stats(lp)
+                r["numerical_characters"] = nums
+                r["alphabetical_characters"] = alphas
+                r["unicode_symbols"] = unic
+
             ver_id = record_result(db, current_user.id, r)
             db.add(models.BulkItem(job_id=jobid, verification_id=ver_id))
         db.commit()
@@ -706,7 +743,6 @@ def get_bulk_job(
         ],
     }
 
-
 @app.get("/verifications/{ver_id}")
 def get_verification(
     ver_id: int,
@@ -760,8 +796,6 @@ def get_verification(
         "raw": raw,
     }
 
-
-
 @app.get("/me")
 def get_me(current_user: models.User = Depends(security.get_current_user)):
     return {
@@ -812,3 +846,111 @@ def oauth_start(provider: str, next: str = "", db: Session = Depends(get_db)):
         token = "dev-token"
 
     return RedirectResponse(url=f"{target}#token={token}", status_code=302)
+        
+@app.get("/billing/summary")
+def billing_summary(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(security.get_current_user),
+):
+    uc = ensure_user_credits(db, current_user.id)
+
+    last_add = (
+        db.query(models.CreditLedger)
+        .filter(models.CreditLedger.user_id == current_user.id,
+                models.CreditLedger.units > 0)
+        .order_by(desc(models.CreditLedger.created_at))
+        .first()
+    )
+    last_added_date = last_add.created_at.isoformat() if last_add else None
+
+    # naive depletion estimate: last 30d avg/day
+    since = datetime.utcnow() - timedelta(days=30)
+    q = (
+        db.query(func.sum(models.CreditLedger.units))
+        .filter(models.CreditLedger.user_id == current_user.id,
+                models.CreditLedger.created_at >= since)
+    ).scalar() or 0
+    spent30 = -min(0, q)  # units are negative for spend
+    avg_per_day = spent30 / 30.0 if spent30 else 0.0
+    months_left = (uc.remaining_credits / (avg_per_day * 30.0)) if avg_per_day else None
+
+    return {
+        "creditBalance": uc.remaining_credits,
+        "lastAdded": last_added_date,           # ISO string; format on the client
+        "timeUntilDepletionMonths": months_left # may be null
+    }
+
+@app.get("/billing/usage")
+def billing_usage(
+    start: str,  # ISO date
+    end: str,    # ISO date (exclusive end ok)
+    interval: str = "daily",  # 'hourly'|'daily'|'weekly'|'monthly'
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(security.get_current_user),
+):
+    # pull negative rows (spend) in the window
+    def _parse_iso8601(s: str) -> datetime:
+        if not s:
+            raise HTTPException(status_code=400, detail="Missing start/end time")
+        s = s.strip()
+        # Accept trailing 'Z' (UTC) and timezone offsets
+        if s.endswith('Z'):
+            s = s[:-1] + '+00:00'
+        try:
+            dt = datetime.fromisoformat(s)
+        except ValueError:
+            raise HTTPException(status_code=400, detail=f"Invalid datetime format: {s}")
+        # Normalize to naive UTC to match DB naive timestamps
+        if dt.tzinfo is not None:
+            dt = dt.astimezone(timezone.utc).replace(tzinfo=None)
+        return dt
+
+    start_dt = _parse_iso8601(start)
+    end_dt   = _parse_iso8601(end)
+
+    rows = (
+        db.query(models.CreditLedger)
+        .filter(models.CreditLedger.user_id == current_user.id,
+                models.CreditLedger.created_at >= start_dt,
+                models.CreditLedger.created_at <  end_dt,
+                models.CreditLedger.units < 0)   # only spend for usage
+        .order_by(models.CreditLedger.created_at.asc())
+        .all()
+    )
+
+    # bucket in Python for SQLite portability
+    def bucket_key(dt):
+        if interval == "hourly":
+            return dt.strftime("%Y-%m-%d %H:00")
+        if interval == "weekly":
+            # ISO week label
+            return f"{dt.isocalendar().year}-W{dt.isocalendar().week:02d}"
+        if interval == "monthly":
+            return dt.strftime("%Y-%m")
+        return dt.strftime("%Y-%m-%d")  # daily default
+
+    series = {}
+    totals = {"bulk": 0, "single": 0, "api": 0, "other": 0}
+    for r in rows:
+        key = bucket_key(r.created_at)
+        s = series.setdefault(key, {"date": key, "bulk": 0, "single": 0, "api": 0, "other": 0})
+        k = r.kind if r.kind in s else "other"
+        s[k] += -r.units
+        totals[k] += -r.units
+
+    # Ensure empty buckets are present (better chart continuity)
+    cur = start_dt
+    def step(dt):
+        if interval == "hourly":  return dt + timedelta(hours=1)
+        if interval == "weekly":  return dt + timedelta(days=7)
+        if interval == "monthly": return (dt.replace(day=1) + timedelta(days=32)).replace(day=1)
+        return dt + timedelta(days=1)
+
+    out = []
+    seen = set(series.keys())
+    while cur < end_dt:
+        key = bucket_key(cur)
+        out.append(series.get(key, {"date": key, "bulk": 0, "single": 0, "api": 0, "other": 0}))
+        cur = step(cur)
+
+    return {"totals": totals, "series": out}

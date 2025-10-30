@@ -94,3 +94,25 @@ class BulkItem(Base):
 
     job = relationship("BulkJob", backref="items")
     verification = relationship("EmailVerification", backref="bulk_item")
+
+# --- NEW: credit ledger -------------------------------------------
+class CreditLedger(Base):
+    __tablename__ = "credit_ledger"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
+
+    # kind: 'single', 'bulk', 'api', 'other', 'topup'
+    kind = Column(String, nullable=False)
+
+    # units: + for add, - for spend
+    units = Column(Integer, nullable=False)
+
+    # optional metadata
+    source = Column(String, nullable=True)   # e.g. 'POST /validate-email'
+    ref    = Column(String, nullable=True)   # e.g. verification_id or job_id
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", backref="credit_ledger")
+# -------------------------------------------------------------------

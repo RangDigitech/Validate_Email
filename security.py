@@ -20,9 +20,9 @@ _SALT_LEN = 16
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # JWT settings
-SECRET_KEY = "abcdefghijklmnopqrstuvwxyz"  # Change this in production!
+SECRET_KEY = "abcdefghijklmnopqrstuvwxyzz"  # Change this in production!
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_DAYS = 7
+ACCESS_TOKEN_EXPIRE_DAYS = 360
 
 
 def _b64e(b: bytes) -> str:
