@@ -16,6 +16,10 @@ class User(Base):
     last_name = Column(String, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    is_admin  = Column(Boolean, nullable=False, server_default="0", index=True)
+    is_active = Column(Boolean, nullable=False, server_default="1", index=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
 
 # models.py (additions)
 

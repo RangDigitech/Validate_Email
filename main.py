@@ -35,6 +35,20 @@ import dns.resolver
 import re
 from datetime import datetime, timedelta, timezone
 from sqlalchemy import func, and_, desc
+from fastapi import Depends
+from sqlalchemy import extract
+from pydantic import BaseModel ,EmailStr
+from sqlalchemy import func
+from routes.contact import router as contact_router
+
+
+class _UserStatusIn(BaseModel):
+    is_active: bool
+
+def admin_required(current_user: models.User = Depends(security.get_current_user)):
+    if not getattr(current_user, "is_admin", False):
+        raise HTTPException(status_code=403, detail="Admin only")
+    return current_user
 
 def has_mx(domain: str) -> bool:
     try:
@@ -45,12 +59,14 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+RECAPTCHA_SECRET = os.getenv("RECAPTCHA_SECRET", "")
+RECAPTCHA_DISABLED = os.getenv("RECAPTCHA_DISABLED", "0") == "1"
 
 
 # This creates the 'users' table in your database if it doesn't exist
@@ -58,7 +74,7 @@ models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI(title="Email Verifier API", version="3.0")
-
+app.include_router(contact_router,prefix="/api")
 # In-memory job store (for a real app, use a database or Redis)
 JOBS = {}
 
@@ -82,6 +98,61 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],           # allows Authorization header too
 )
+
+class ContactIn(BaseModel):
+    name: str | None = None
+    email: EmailStr
+    phone: str | None = None
+    subject: str | None = None
+    message: str | None = None
+    recaptcha_token: str
+
+@app.post("/contact/submit")
+async def contact_submit(payload: ContactIn, request: Request, db: Session = Depends(get_db)):
+    # Verify captcha
+    await verify_recaptcha_or_400(payload.recaptcha_token, request.client.host if request.client else None)
+
+    # TODO: save to DB or send email/Slack—up to you
+    # Example (optional):
+    # db.add(models.ContactMessage(...)); db.commit()
+
+    return {"ok": True, "received": {
+        "name": payload.name,
+        "email": payload.email,
+        "phone": payload.phone,
+        "subject": payload.subject,
+        "message": payload.message,
+    }}
+
+async def verify_recaptcha_or_400(token: str, remote_ip: str | None = None):
+    """
+    Verify Google reCAPTCHA token. Raise 400 if invalid.
+    Set RECAPTCHA_DISABLED=1 in .env to bypass in local dev.
+    """
+    if RECAPTCHA_DISABLED:
+        return True
+    if not RECAPTCHA_SECRET:
+        raise HTTPException(status_code=500, detail="Server captcha is not configured")
+    if not token:
+        raise HTTPException(status_code=400, detail="Missing captcha token")
+
+    try:
+        async with httpx.AsyncClient(timeout=10) as client:
+            data = {
+                "secret": RECAPTCHA_SECRET,
+                "response": token
+            }
+            if remote_ip:
+                data["remoteip"] = remote_ip
+            r = await client.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+            j = r.json()
+    except Exception:
+        raise HTTPException(status_code=400, detail="Captcha verification failed")
+
+    if not j.get("success"):
+        # Optional: log j.get("error-codes")
+        raise HTTPException(status_code=400, detail="Invalid captcha")
+    return True
 
 # --- LIGHTWEIGHT public email check (no auth, no credits)
 @app.get("/utils/check-email")
@@ -263,6 +334,48 @@ def record_result(db: Session, user_id: int, res: dict) -> int:
 
     db.commit(); db.refresh(ev)
     return ev.id
+
+# --- reCAPTCHA verification helper (graceful if not configured) ---
+async def verify_recaptcha_or_400(token: str, remote_ip: str | None = None):
+    """
+    Verify Google reCAPTCHA (v2 Invisible or v3) token if RECAPTCHA_SECRET is set.
+    - If RECAPTCHA_SECRET is not set, act as a no-op (allow) for local/dev.
+    - If set, POST to Google's siteverify and enforce success/score.
+    Optional envs:
+      RECAPTCHA_MIN_SCORE (default 0.3), RECAPTCHA_EXPECTED_ACTION, RECAPTCHA_STRICT (true/false).
+    """
+    secret = os.getenv("RECAPTCHA_SECRET")
+    if not secret:
+        return True
+    token = (token or "").strip()
+    if not token:
+        raise HTTPException(status_code=400, detail="Missing recaptcha token")
+    try:
+        async with httpx.AsyncClient(timeout=10) as client:
+            data = {"secret": secret, "response": token}
+            if remote_ip:
+                data["remoteip"] = remote_ip
+            resp = await client.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+            body = resp.json()
+            if not body.get("success"):
+                raise HTTPException(status_code=400, detail="Invalid recaptcha")
+            # reCAPTCHA v3 score handling (present only for v3)
+            score = body.get("score")
+            threshold = float(os.getenv("RECAPTCHA_MIN_SCORE", "0.3"))
+            if isinstance(score, (int, float)) and score < threshold:
+                raise HTTPException(status_code=400, detail="Recaptcha score too low")
+            expected_action = os.getenv("RECAPTCHA_EXPECTED_ACTION", "").strip()
+            action = (body.get("action") or "").strip()
+            if expected_action and action and expected_action != action:
+                raise HTTPException(status_code=400, detail="Recaptcha action mismatch")
+        return True
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Network or other unexpected error: only block if STRICT
+        if (os.getenv("RECAPTCHA_STRICT", "false").lower() == "true"):
+            raise HTTPException(status_code=400, detail=f"Recaptcha verification failed: {e}")
+        return True
 
 @app.get("/")
 async def root():
@@ -459,28 +572,30 @@ async def create_user(
     except Exception as e:
         print(f"Unexpected registration error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+# --- AUTHENTICATION ENDPOINTS ---
 
 @app.post("/login", response_model=schemas.Token)
 async def login_for_access_token(request: Request, db: Session = Depends(get_db)):
-    """
-    Accept both frontend form (email/password) and OAuth2 (username/password).
-    Works with application/x-www-form-urlencoded and multipart/form-data.
-    """
     try:
         form = await request.form()
         email = (form.get("email") or form.get("username") or "").strip()
         password = (form.get("password") or "").strip()
+
+        # NEW: verify captcha before any DB work
+        recaptcha_token = form.get("recaptcha_token") or ""
+        await verify_recaptcha_or_400(recaptcha_token, request.client.host if request.client else None)
 
         if not email or not password:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email and password required")
 
         user = db.query(models.User).filter(models.User.email == email).first()
         if not user or not security.verify_password(password, user.hashed_password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect email or password",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
+
+        # IMPORTANT: also block deactivated users at login (your earlier ask)
+        if getattr(user, "is_active", True) is False:
+            raise HTTPException(status_code=403, detail="This account is deactivated")
+
         access_token = security.create_access_token(data={"sub": user.email})
         return {"access_token": access_token, "token_type": "bearer"}
     except HTTPException:
@@ -500,14 +615,13 @@ async def single_email_validation(
 ):
     norm_email = normalize_email_addr(email)
 
-    # Decide if we need to charge (only if user hasn't checked this email before)
+    # Charge only if this user hasn't verified this exact email before
     already_checked = has_user_checked_email(db, current_user.id, norm_email)
     credits_charged = 0
     if not already_checked:
-        charge_credits(db, current_user.id, 1, kind="single", source="POST /validate-email")
+        charge_credits(db, current_user.id, 1, kind="single", source=f"single:{norm_email}")
         credits_charged = 1
-    
-    charge_credits(db, current_user.id, 1, kind="single", source="POST /validate-email")
+
     # Run verification (you can later add a cache shortcut if you want)
     res = await validate_single_async(norm_email, "noreply@example.com", None, smtp)
     res["deliverable"] = (res.get("final_status") == "valid")
@@ -802,6 +916,8 @@ def get_me(current_user: models.User = Depends(security.get_current_user)):
         "email": current_user.email,
         "first_name": current_user.first_name,
         "last_name": current_user.last_name,
+        "is_admin": bool(getattr(current_user, "is_admin", False)),
+        "is_active": bool(getattr(current_user, "is_active", True)),
     }
 
 # --- Local-only OAuth start (dev shim) ---
@@ -954,3 +1070,257 @@ def billing_usage(
         cur = step(cur)
 
     return {"totals": totals, "series": out}
+
+# --- ADMIN: Users list
+@app.get("/admin/users")
+def admin_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    rows = db.query(models.User).order_by(models.User.id.asc()).all()
+    out = []
+    for u in rows:
+        out.append({
+            "id": u.id,
+            "email": u.email,
+            "first_name": u.first_name,
+            "last_name": u.last_name,
+            "is_active": bool(getattr(u, "is_active", True)),
+            "created_at": getattr(u, "created_at", None),
+        })
+    return out
+
+# --- ADMIN: Users w/ credits
+@app.get("/admin/users/credits")
+def admin_users_credits(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    q = (
+        db.query(models.User, models.UserCredits)
+        .join(models.UserCredits, models.User.id == models.UserCredits.user_id, isouter=True)
+        .order_by(models.User.id.asc())
+        .all()
+    )
+    out = []
+    for u, c in q:
+        used = (c.used_credits if c else 0) or 0
+        remaining = (c.remaining_credits if c else 0) or 0
+        out.append({
+            "user_id": u.id,
+            "email": u.email,
+            "name": f"{u.first_name or ''} {u.last_name or ''}".strip() or u.email.split("@")[0],
+            "used_credits": used,
+            "total_credits": used + remaining,
+            "remaining_credits": remaining,
+        })
+    return out
+
+# --- ADMIN: Deactivated users
+@app.get("/admin/users/deactivated")
+def admin_users_deactivated(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    rows = db.query(models.User).filter(models.User.is_active == False).all()
+    return [
+        {
+            "id": u.id,
+            "email": u.email,
+            "first_name": u.first_name,
+            "last_name": u.last_name,
+            "is_active": False,
+            "created_at": getattr(u, "created_at", None),
+        } for u in rows
+    ]
+
+# --- ADMIN: Single user details
+@app.get("/admin/users/{user_id}")
+def admin_user_detail(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    u = db.query(models.User).filter(models.User.id == user_id).first()
+    if not u:
+        raise HTTPException(404, "User not found")
+    uc = db.query(models.UserCredits).filter(models.UserCredits.user_id == u.id).first()
+    used = (uc.used_credits if uc else 0) or 0
+    remaining = (uc.remaining_credits if uc else 0) or 0
+    return {
+        "id": u.id,
+        "email": u.email,
+        "first_name": u.first_name,
+        "last_name": u.last_name,
+        "is_active": bool(getattr(u, "is_active", True)),
+        "created_at": getattr(u, "created_at", None),
+        "used_credits": used,
+        "remaining_credits": remaining,
+        "total_credits": used + remaining,
+    }
+
+# --- ADMIN: Toggle user active
+class ToggleBody(schemas.BaseModel):
+    active: bool
+
+@app.post("/admin/users/{user_id}/toggle")
+def admin_toggle_user(
+    user_id: int,
+    body: ToggleBody,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    u = db.query(models.User).filter(models.User.id == user_id).first()
+    if not u:
+        raise HTTPException(404, "User not found")
+    u.is_active = bool(body.active)
+    db.add(u); db.commit(); db.refresh(u)
+    return {"ok": True, "id": u.id, "is_active": u.is_active}
+
+# --- ADMIN: High-level stats
+
+@app.get("/admin/stats")
+def admin_stats(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    # High-level counts
+    total_users = db.query(func.count(models.User.id)).scalar() or 0
+    active_users = db.query(func.count(models.User.id)).filter(models.User.is_active == True).scalar() or 0
+    deactivated_users = total_users - active_users
+
+    # Credits totals
+    q = db.query(models.UserCredits.used_credits, models.UserCredits.remaining_credits).all()
+    total_used = sum((r[0] or 0) for r in q)
+    total_remaining = sum((r[1] or 0) for r in q)
+
+    # Users by month (this year)
+    from datetime import datetime
+    cur_year = datetime.utcnow().year
+
+    month_col = extract('month', models.User.created_at).label('m')
+    rows_month = (
+        db.query(month_col, func.count(models.User.id))
+        .filter(extract('year', models.User.created_at) == cur_year)
+        .group_by(month_col)
+        .order_by(month_col.asc())
+        .all()
+    )
+    # rows_month: [(1.0, count), (2.0, count), ...] — extract returns numeric
+    month_map = {int(m): int(c) for m, c in rows_month}
+
+    months_labels = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    users_by_month = [{"month": lbl, "users": month_map.get(i, 0)} for i, lbl in enumerate(months_labels, start=1)]
+    max_month = max(users_by_month, key=lambda x: x["users"]) if users_by_month else {"month": "—", "users": 0}
+
+    # Users by year (last 5 years: optional filter; here we return all years present)
+    year_col = extract('year', models.User.created_at).label('y')
+    rows_year = (
+        db.query(year_col, func.count(models.User.id))
+        .group_by(year_col)
+        .order_by(year_col.asc())
+        .all()
+    )
+    users_by_year = [{"year": int(y), "users": int(c)} for y, c in rows_year]
+
+    return {
+        "total_users": int(total_users),
+        "active_users": int(active_users),
+        "deactivated_users": int(deactivated_users),
+        "total_credits_used": int(total_used),
+        "total_credits_remaining": int(total_remaining),
+        "users_by_month": users_by_month,
+        "max_users_month": max_month,
+        "users_by_year": users_by_year,
+        "year": cur_year,
+    }
+@app.get("/admin/users")
+def admin_list_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    rows = (
+        db.query(models.User)
+        .order_by(models.User.created_at.desc())
+        .all()
+    )
+    return [
+        {
+            "id": u.id,
+            "email": u.email,
+            "first_name": u.first_name,
+            "last_name": u.last_name,
+            "is_admin": bool(u.is_admin),
+            "is_active": bool(u.is_active),
+            "created_at": u.created_at,
+        }
+        for u in rows
+    ]
+@app.get("/admin/users/{user_id}")
+def admin_get_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    u = db.query(models.User).filter(models.User.id == user_id).first()
+    if not u:
+        raise HTTPException(404, "User not found")
+    credits = db.query(models.UserCredits).filter(models.UserCredits.user_id == user_id).first()
+    return {
+        "id": u.id,
+        "email": u.email,
+        "first_name": u.first_name,
+        "last_name": u.last_name,
+        "is_admin": bool(u.is_admin),
+        "is_active": bool(u.is_active),
+        "created_at": u.created_at,
+        "credits": {
+            "remaining": getattr(credits, "remaining_credits", 0),
+            "used": getattr(credits, "used_credits", 0),
+        },
+    }
+
+@app.put("/admin/users/{user_id}/status")
+def admin_update_user_status(
+    user_id: int,
+    body: _UserStatusIn,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    u = db.query(models.User).filter(models.User.id == user_id).first()
+    if not u:
+        raise HTTPException(404, "User not found")
+    u.is_active = bool(body.is_active)
+    db.add(u); db.commit(); db.refresh(u)
+    return {"ok": True, "id": u.id, "is_active": u.is_active}
+
+@app.get("/admin/users/credits")
+def admin_users_with_credits(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    rows = (
+        db.query(models.User, models.UserCredits)
+        .outerjoin(models.UserCredits, models.User.id == models.UserCredits.user_id)
+        .all()
+    )
+    out = []
+    for u, c in rows:
+        out.append({
+            "id": u.id,
+            "email": u.email,
+            "is_active": bool(u.is_active),
+            "is_admin": bool(u.is_admin),
+            "remaining": getattr(c, "remaining_credits", 0),
+            "used": getattr(c, "used_credits", 0),
+        })
+    return out
+
+@app.get("/admin/users/deactivated")
+def admin_deactivated_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(admin_required),
+):
+    rows = db.query(models.User).where(models.User.is_active == False).all()
+    return [{"id": u.id, "email": u.email} for u in rows]
+
