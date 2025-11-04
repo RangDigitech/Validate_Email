@@ -59,8 +59,8 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
@@ -334,48 +334,6 @@ def record_result(db: Session, user_id: int, res: dict) -> int:
 
     db.commit(); db.refresh(ev)
     return ev.id
-
-# --- reCAPTCHA verification helper (graceful if not configured) ---
-async def verify_recaptcha_or_400(token: str, remote_ip: str | None = None):
-    """
-    Verify Google reCAPTCHA (v2 Invisible or v3) token if RECAPTCHA_SECRET is set.
-    - If RECAPTCHA_SECRET is not set, act as a no-op (allow) for local/dev.
-    - If set, POST to Google's siteverify and enforce success/score.
-    Optional envs:
-      RECAPTCHA_MIN_SCORE (default 0.3), RECAPTCHA_EXPECTED_ACTION, RECAPTCHA_STRICT (true/false).
-    """
-    secret = os.getenv("RECAPTCHA_SECRET")
-    if not secret:
-        return True
-    token = (token or "").strip()
-    if not token:
-        raise HTTPException(status_code=400, detail="Missing recaptcha token")
-    try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            data = {"secret": secret, "response": token}
-            if remote_ip:
-                data["remoteip"] = remote_ip
-            resp = await client.post("https://www.google.com/recaptcha/api/siteverify", data=data)
-            body = resp.json()
-            if not body.get("success"):
-                raise HTTPException(status_code=400, detail="Invalid recaptcha")
-            # reCAPTCHA v3 score handling (present only for v3)
-            score = body.get("score")
-            threshold = float(os.getenv("RECAPTCHA_MIN_SCORE", "0.3"))
-            if isinstance(score, (int, float)) and score < threshold:
-                raise HTTPException(status_code=400, detail="Recaptcha score too low")
-            expected_action = os.getenv("RECAPTCHA_EXPECTED_ACTION", "").strip()
-            action = (body.get("action") or "").strip()
-            if expected_action and action and expected_action != action:
-                raise HTTPException(status_code=400, detail="Recaptcha action mismatch")
-        return True
-    except HTTPException:
-        raise
-    except Exception as e:
-        # Network or other unexpected error: only block if STRICT
-        if (os.getenv("RECAPTCHA_STRICT", "false").lower() == "true"):
-            raise HTTPException(status_code=400, detail=f"Recaptcha verification failed: {e}")
-        return True
 
 @app.get("/")
 async def root():
