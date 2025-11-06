@@ -1360,3 +1360,27 @@ def bulk_job_status(jobid: str,
         }
 
     return payload
+# main.py (add this endpoint)
+@app.get("/bulk/status/{jobid}")
+def bulk_status(jobid: str,
+                db: Session = Depends(get_db),
+                current_user: models.User = Depends(security.get_current_user)):
+    key = f"bulk:{jobid}"
+    h = rconn.hgetall(key)
+    if not h:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    owner = (h.get(b"uid") or b"0").decode()
+    if owner != str(current_user.id):
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    status = (h.get(b"status") or b"queued").decode()
+    total  = int((h.get(b"total") or b"0").decode())
+    done   = int((h.get(b"done")  or b"0").decode())
+    chunks = int((h.get(b"chunks") or b"0").decode())
+
+    # (Optional) list files you pushed for this job
+    files_key = f"job:{jobid}:files"
+    files = [x.decode() for x in rconn.lrange(files_key, 0, -1)]
+
+    return {"status": status, "total": total, "done": done, "chunks": chunks, "files": files}
