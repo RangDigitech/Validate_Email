@@ -69,8 +69,8 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
