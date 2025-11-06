@@ -49,7 +49,7 @@ from queue_utils import split_csv, init_job, job_status
 from tasks_rq import verify_chunk
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
-rconn = redis.from_url(REDIS_URL)
+rconn = Redis.from_url(REDIS_URL)
 rq_bulk = Queue("bulk", connection=rconn)
 CHUNK_SIZE_DEFAULT = 5000
 
