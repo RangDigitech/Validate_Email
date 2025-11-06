@@ -49,8 +49,9 @@ from queue_utils import split_csv, init_job, job_status
 from tasks_rq import verify_chunk
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
-redis = Redis.from_url(REDIS_URL)
-rq_q = Queue("bulk", connection=redis)
+rconn = redis.from_url(REDIS_URL)
+rq_bulk = Queue("bulk", connection=rconn)
+CHUNK_SIZE_DEFAULT = 5000
 
 class _UserStatusIn(BaseModel):
     is_active: bool
@@ -612,9 +613,9 @@ async def single_email_validation(
         "credits_charged": credits_charged,
         "duplicate": already_checked
     }
-
+# --- REPLACE current /validate-file with an enqueueing version ---
 @app.post("/validate-file")
-async def file_validation(
+async def file_validation_enqueued(
     file: UploadFile = File(...),
     smtp: bool = Form(False),
     workers: int = Form(12),
@@ -623,32 +624,29 @@ async def file_validation(
     current_user: models.User = Depends(security.get_current_user)
 ):
     jobid = uuid.uuid4().hex
+
     tmp_input_path = os.path.join(tempfile.gettempdir(), f"{jobid}_{file.filename}")
     outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
     os.makedirs(outdir, exist_ok=True)
 
-    try:
-        with open(tmp_input_path, "wb") as f:
-            content = await file.read()
-            f.write(content)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
+    with open(tmp_input_path, "wb") as f:
+        content = await file.read()
+        f.write(content)
 
-    # Load emails; normalize and keep original order
     raw_emails = load_emails_from_csv(tmp_input_path)
     emails = [normalize_email_addr(e) for e in raw_emails if e]
     if not emails:
-        raise HTTPException(status_code=400, detail="No emails found in the uploaded CSV file.")
+        raise HTTPException(status_code=400, detail="No emails found")
 
-    # Determine which ones are first-time for this user
+    # Credits (keep your logic)
     existing = get_existing_emails_set(db, current_user.id, emails)
-    to_charge = [e for e in set(emails) if e not in existing]  # charge unique new emails only
+    to_charge = [e for e in set(emails) if e not in existing]
     credits_to_charge = len(to_charge)
-
     if credits_to_charge > 0:
-        charge_credits(db, current_user.id, credits_to_charge, kind="bulk", source="POST /validate-file", ref=jobid)
+        charge_credits(db, current_user.id, credits_to_charge,
+                       kind="bulk", source="POST /validate-file", ref=jobid)
 
-    # Make a bulk job record
+    # Make bulk job record
     job_name = (name or os.path.splitext(file.filename or "")[0] or f"Upload {datetime.utcnow().date()}")[:120]
     bulk_job = models.BulkJob(
         id=jobid,
@@ -659,43 +657,37 @@ async def file_validation(
     db.add(bulk_job)
     db.commit(); db.refresh(bulk_job)
 
-    # Run validations (you could skip re-validating exact duplicates and reuse cache later if desired)
-    try:
-        results = await validate_many_async(emails, "noreply@example.com", smtp, workers)
+    # Chunk & enqueue
+    chunk_size = int(os.getenv("BULK_CHUNK_SIZE", CHUNK_SIZE_DEFAULT))
+    chunks = [emails[i:i+chunk_size] for i in range(0, len(emails), chunk_size)]
 
-        for r in results:
-            try:
-                r["deliverable"] = bool(r.get("final_status") == "valid")
-            except Exception:
-                r["deliverable"] = False
-            lp = (r.get("local_part") or "").strip()
-            if lp:
-                nums, alphas, unic = compute_char_stats(lp)
-                r["numerical_characters"] = nums
-                r["alphabetical_characters"] = alphas
-                r["unicode_symbols"] = unic
+    # store a small progress JSON in Redis
+    rconn.hset(f"bulk:{jobid}", mapping={
+        "total": len(emails),
+        "done": 0,
+        "chunks": len(chunks),
+        "status": "queued",
+        "outdir": outdir,
+        "smtp": "1" if smtp else "0",
+        "uid": str(current_user.id),
+    })
 
-            ver_id = record_result(db, current_user.id, r)
-            db.add(models.BulkItem(job_id=jobid, verification_id=ver_id))
-        db.commit()
+    for idx, chunk in enumerate(chunks):
+        rq_bulk.enqueue(
+            verify_chunk,
+            jobid,
+            idx,
+            chunk,
+            smtp,
+            current_user.id,
+            outdir,
+            job_timeout=3600,      # per-chunk timeout
+            result_ttl=86400,      # keep results for 1 day
+            failure_ttl=86400
+        )
 
-        write_outputs(results, outdir)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Processing failed: {e}")
+    return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
 
-    JOBS[jobid] = outdir
-    return {
-        "jobid": jobid,
-        "name": job_name,
-        "count": len(results),
-        "results": results,
-        "credits_charged": credits_to_charge,
-        "duplicates_in_upload": len([e for e in emails if e in existing]),
-        "files": {
-            "results_json": f"/download/{jobid}/results.json",
-            "results_csv": f"/download/{jobid}/results.csv",
-        }
-    }
 
 @app.get("/download/{jobid}/{name}")
 async def download_file(jobid: str, name: str):
@@ -1329,6 +1321,42 @@ async def bulk_enqueue(
 
     return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
 
+# --- NEW: polling endpoint ---
 @app.get("/bulk/jobs/{jobid}")
-def bulk_job_status(jobid: str):
-    return job_status(jobid)
+def bulk_job_status(jobid: str,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(security.get_current_user)):
+
+    meta = rconn.hgetall(f"bulk:{jobid}")  # returns dict of bytes->bytes
+    if not meta:
+        # Optionally fall back to DB BulkJob presence
+        bj = db.query(models.BulkJob).filter(models.BulkJob.id==jobid,
+                    models.BulkJob.user_id==current_user.id).first()
+        if not bj:
+            raise HTTPException(404, "Bulk job not found")
+        return {"jobid": jobid, "status": "unknown"}  # or check DB only
+
+    meta = {k.decode(): v.decode() for k, v in meta.items()}
+    total = int(meta.get("total", "0"))
+    done = int(meta.get("done", "0"))
+    chunks = int(meta.get("chunks", "0"))
+    status = meta.get("status", "queued")
+    outdir = meta.get("outdir")
+
+    payload = {
+        "jobid": jobid,
+        "total": total,
+        "done": done,
+        "progress": (done / total) if total else 0.0,
+        "chunks": chunks,
+        "status": status,
+    }
+
+    # When done, expose download URLs (reuse your /download endpoint if you like)
+    if status == "finished":
+        payload["files"] = {
+            "results_json": f"/download/{jobid}/results.json",
+            "results_csv":  f"/download/{jobid}/results.csv",
+        }
+
+    return payload
