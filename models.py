@@ -8,6 +8,23 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 
+class BlogPost(Base):
+    __tablename__ = "blog_posts"
+    id = Column(Integer, primary_key=True)
+    slug = Column(String, unique=True, index=True, nullable=False)
+    title = Column(String, nullable=False)         # Topic
+    author_name = Column(String, nullable=False)   # Author
+    cover_image_url = Column(String)               # Image
+    excerpt = Column(Text)                         # Short summary for cards
+    content_md = Column(Text, nullable=False)      # Markdown
+    content_html = Column(Text)                    # Cached sanitized HTML
+    published_at = Column(DateTime(timezone=True)) # Date (null = draft)
+    status = Column(String, nullable=False, default="draft")  # 'draft'|'published'
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+    __table_args__ = (UniqueConstraint("slug", name="uq_blog_posts_slug"),)
+    
 class User(Base):
     __tablename__ = "users"
 
@@ -22,6 +39,7 @@ class User(Base):
 
 
 # models.py (additions)
+
 
 class UserCredits(Base):
     __tablename__ = "user_credits"

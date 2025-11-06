@@ -40,7 +40,17 @@ from sqlalchemy import extract
 from pydantic import BaseModel ,EmailStr
 from sqlalchemy import func
 from routes.contact import router as contact_router
+from blog_routes import router as blog_router
+import os, uuid
+from pathlib import Path
+from redis import Redis
+from rq import Queue
+from queue_utils import split_csv, init_job, job_status
+from tasks_rq import verify_chunk
 
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
+redis = Redis.from_url(REDIS_URL)
+rq_q = Queue("bulk", connection=redis)
 
 class _UserStatusIn(BaseModel):
     is_active: bool
@@ -59,8 +69,8 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
@@ -75,6 +85,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Email Verifier API", version="3.0")
 app.include_router(contact_router,prefix="/api")
+
+app.include_router(blog_router)
+
 # In-memory job store (for a real app, use a database or Redis)
 JOBS = {}
 
@@ -1281,4 +1294,41 @@ def admin_deactivated_users(
 ):
     rows = db.query(models.User).where(models.User.is_active == False).all()
     return [{"id": u.id, "email": u.email} for u in rows]
+@app.post("/bulk/enqueue")
+async def bulk_enqueue(
+    file: UploadFile = File(...),
+    smtp: bool = Form(False),
+    workers: int = Form(12)
+):
+    jobs_dir = Path("./jobs")
+    jobs_dir.mkdir(parents=True, exist_ok=True)
 
+    jobid = str(uuid.uuid4())
+    upload_path = jobs_dir / f"{jobid}_{file.filename}"
+    with upload_path.open("wb") as f:
+        f.write(await file.read())
+
+    # Split into chunks and initialize progress
+    chunks = split_csv(str(upload_path))
+    # Quick count (header-aware)
+    total_rows = max(0, sum(1 for _ in upload_path.open(encoding="utf-8")) - 1)
+    init_job(jobid, total_rows=total_rows, chunk_count=len(chunks))
+
+    # Enqueue each chunk to RQ
+    for c in chunks:
+        rq_q.enqueue(
+            verify_chunk,
+            jobid,
+            c,
+            smtp,
+            workers,
+            job_timeout="8h",
+            result_ttl=86400,
+            failure_ttl=86400
+        )
+
+    return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
+
+@app.get("/bulk/jobs/{jobid}")
+def bulk_job_status(jobid: str):
+    return job_status(jobid)

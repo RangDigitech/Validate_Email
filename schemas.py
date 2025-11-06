@@ -1,6 +1,7 @@
 # schemas.py
 from pydantic import BaseModel
 from typing import Optional, List
+from datetime import datetime
 
 class UserCreate(BaseModel):
     first_name: str
@@ -39,3 +40,49 @@ class EmailVerificationLite(BaseModel):
 
     class Config:
         from_attributes = True
+
+class BlogPostCreate(BaseModel):
+    title: str
+    author_name: str
+    cover_image_url: Optional[str] = None
+    excerpt: Optional[str] = None
+    content_md: str
+    status: str = "draft"                 # 'draft' | 'published'
+    published_at: Optional[datetime] = None
+
+class BlogPostUpdate(BaseModel):
+    title: Optional[str] = None
+    author_name: Optional[str] = None
+    cover_image_url: Optional[str] = None
+    excerpt: Optional[str] = None
+    content_md: Optional[str] = None
+    status: Optional[str] = None          # 'draft' | 'published'
+    published_at: Optional[datetime] = None
+
+# Public response (no content_md)
+class BlogPostPublicOut(BaseModel):
+    id: int
+    slug: str
+    title: str
+    author_name: str
+    cover_image_url: Optional[str]
+    excerpt: Optional[str]
+    content_html: str
+    status: str
+    published_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+class BlogPostPublicList(BaseModel):
+    items: List[BlogPostPublicOut]
+    total: int
+    page: int
+    pages: int
+
+# Admin response (includes content_md)
+class BlogPostAdminOut(BlogPostPublicOut):
+    content_md: str
+
+class BlogPostAdminList(BaseModel):
+    items: List[BlogPostAdminOut]
