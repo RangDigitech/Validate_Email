@@ -699,10 +699,8 @@ async def download_file(jobid: str, name: str):
 
     outdir = (meta.get(b"outdir") or b"").decode()
     if not outdir:
-        # fallback: conventional temp dir layout
         outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
 
-    # only allow known file names
     if name not in ("results.csv", "results.json"):
         raise HTTPException(status_code=400, detail="Invalid filename.")
 

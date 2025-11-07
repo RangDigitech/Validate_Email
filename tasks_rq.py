@@ -3,8 +3,9 @@ from pathlib import Path
 from typing import List, Dict
 from rq import get_current_job
 from redis import Redis
+from queue_utils import push_file
 
-from queue_utils import incr_done, set_status, push_file
+# from queue_utils import incr_done, set_status, push_file
 # Import your existing async pipeline & writer from app.py
 from app import validate_many_async, write_outputs  # uses your current logic
 
@@ -15,39 +16,95 @@ async def _verify_emails(emails: List[str], smtp: bool, workers: int) -> List[Di
     # Reuse your async bulk verifier
     return await validate_many_async(emails, smtp_from="noreply@example.com", smtp=smtp, workers=workers)
 
-def verify_chunk(jobid: str, chunk_path: str, smtp: bool, workers: int):
+def verify_chunk(jobid: str, idx: int, chunk: list, smtp: bool, user_id: int, outdir: str):
     """
-    RQ task (sync entry) that runs your async verifier via anyio,
-    writes output files, and updates progress in Redis.
+    Enqueued by /validate-file with params:
+      jobid, idx, chunk(list-of-emails), smtp(bool), user_id(int), outdir(str)
+    Updates Redis hash bulk:{jobid} so /bulk/status/{jobid} can see progress.
+    On the last chunk, merges parts into results.csv / results.json and marks finished.
     """
     import anyio
-    set_status(jobid, "running")
+    from datetime import datetime
 
-    # read emails from the chunk
-    with open(chunk_path, newline="", encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-    emails = [r["email"].strip() for r in rows if r.get("email")]
+    # Mark running (match your status route which reads bulk:{jobid})
+    r.hset(f"bulk:{jobid}", "status", "running")
 
-    # run your async pipeline
-    results = anyio.run(_verify_emails, emails, smtp, workers)
+    # Normalize emails
+    emails = [e.strip() for e in (chunk or []) if isinstance(e, str) and e.strip()]
+    if not emails:
+        # still count as done for this chunk
+        r.hincrby(f"bulk:{jobid}", "done", 0)
+        return
 
-    # write outputs to a per-job folder
-    outdir = Path(f"./jobs/{jobid}")
-    outdir.mkdir(parents=True, exist_ok=True)
+    # Run your async verifier (reusing your existing pipeline)
+    async def _run():
+        return await validate_many_async(
+            emails,
+            smtp_from="noreply@example.com",
+            smtp=smtp,
+            workers=int(os.getenv("BULK_WORKERS", "12")),
+        )
+    results = anyio.run(_run)
 
-    # Use your helper if it composes combined results; if not, write per-chunk files:
+    # Write a per-chunk CSV (so we can merge later)
+    part_dir = Path(outdir)
+    part_dir.mkdir(parents=True, exist_ok=True)
+    part_csv = part_dir / f"part_{idx:04d}.csv"
+
+    # Prefer your existing writer if it can append into outdir; otherwise write a simple CSV
     try:
-        write_outputs(results, outdir)   # your helper (already in app.py)
+        # if your write_outputs can handle per-chunk writes to outdir, keep it:
+        write_outputs(results, part_dir)
+        # if write_outputs produces a single file per run, also drop a part_* for merging fallback:
+        if not part_csv.exists():
+            with part_csv.open("w", newline="", encoding="utf-8") as f:
+                keys = ["email","deliverable","score","reason"]
+                w = csv.DictWriter(f, fieldnames=keys)
+                w.writeheader()
+                for row in results:
+                    w.writerow({k: row.get(k) for k in keys})
     except Exception:
-        # minimal fallback writer
-        csv_path = outdir / f"{Path(chunk_path).stem}_results.csv"
-        with csv_path.open("w", newline="", encoding="utf-8") as f:
+        # Minimal fallback writer
+        with part_csv.open("w", newline="", encoding="utf-8") as f:
             keys = ["email","deliverable","score","reason"]
             w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()
             for row in results:
                 w.writerow({k: row.get(k) for k in keys})
-        push_file(jobid, str(csv_path))
 
-    # progress
-    incr_done(jobid, len(emails))
+    # Increment progress on the SAME KEY your status route reads
+    done = r.hincrby(f"bulk:{jobid}", "done", len(emails))
+    total = int((r.hget(f"bulk:{jobid}", "total") or b"0").decode())
+
+    # If this was the final chunk, merge parts and flip status
+    if total and done >= total:
+        # Merge all part_*.csv into results.csv
+        parts = sorted(Path(outdir).glob("part_*.csv"))
+        results_csv = Path(outdir) / "results.csv"
+        with results_csv.open("w", newline="", encoding="utf-8") as out:
+            writer = None
+            for p in parts:
+                with p.open("r", newline="", encoding="utf-8") as f:
+                    reader = csv.DictReader(f)
+                    if writer is None:
+                        writer = csv.DictWriter(out, fieldnames=reader.fieldnames)
+                        writer.writeheader()
+                    for row in reader:
+                        writer.writerow(row)
+
+        # (Optional) build a JSON too if your UI uses it
+        results_json = Path(outdir) / "results.json"
+        try:
+            # Very small JSON: just list emails + summary fields. Adjust as you like.
+            import json
+            rows = []
+            with results_csv.open("r", newline="", encoding="utf-8") as f:
+                for row in csv.DictReader(f):
+                    rows.append(row)
+            results_json.write_text(json.dumps(rows, ensure_ascii=False))
+        except Exception:
+            pass
+
+        # Let the UI discover downloadable files (your status route looks at this list)
+        r.rpush(f"job:{jobid}:files", "results.csv", "results.json")
+        r.hset(f"bulk:{jobid}", "status", "finished")
