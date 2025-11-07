@@ -692,24 +692,25 @@ async def file_validation_enqueued(
     for idx, chunk in enumerate(chunks):
         try:
             job = rq_bulk.enqueue(
-                verify_chunk,
-                jobid,
-                idx,
-                chunk,
-                smtp,
-                current_user.id,
-                outdir,
-                job_timeout=3600,      # per-chunk timeout
-                result_ttl=86400,
-                failure_ttl=86400
+            verify_chunk,
+            jobid,
+            idx,
+            chunk,
+            smtp,
+            current_user.id,
+            outdir,
+            job_timeout=3600,      # per-chunk timeout
+            result_ttl=86400,
+            failure_ttl=86400
             )
-            # ↓↓↓ add a strong trace so we know the API actually queued work
+        # ↓↓↓ add a strong trace so we know the API actually queued work
             print(f"[BULK][ENQ] jobid={jobid} idx={idx} size={len(chunk)} rq_id={job.id}")
         except Exception as e:
-            # fail visible: UI won’t hang at 0 with unknown cause
+        # fail visible: UI won’t hang at 0 with unknown cause
             rconn.hset(f"bulk:{jobid}", mapping={"status": "error"})
             print(f"[BULK][ENQ-FAIL] jobid={jobid} idx={idx} err={e}")
             raise
+        return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
 
 
 @app.get("/download/{jobid}/{name}")
