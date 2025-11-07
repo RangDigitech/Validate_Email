@@ -26,7 +26,7 @@ async def _verify_emails(emails: List[str], smtp: bool, workers: int) -> List[Di
 
     # Detect the correct SMTP-flag parameter name
     param_names = set(inspect.signature(validate_many_async).parameters.keys())
-    for candidate in ("smtp", "do_smtp", "smtp_check", "perform_smtp", "enable_smtp"):
+    for candidate in ("smtp_flag", "smtp", "do_smtp", "smtp_check", "perform_smtp", "enable_smtp"):
         if candidate in param_names:
             kwargs[candidate] = smtp
             break  # use the first matching name
