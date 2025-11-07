@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List, Dict
 from rq import get_current_job
 from redis import Redis
+import inspect
 from queue_utils import push_file
 
 # from queue_utils import incr_done, set_status, push_file
@@ -12,9 +13,25 @@ from app import validate_many_async, write_outputs  # uses your current logic
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 r = Redis.from_url(REDIS_URL)
 
+# async def _verify_emails(emails: List[str], smtp: bool, workers: int) -> List[Dict]:
+#     # Reuse your async bulk verifier
+#     return await validate_many_async(emails, smtp_from="noreply@example.com", smtp=smtp, workers=workers)
 async def _verify_emails(emails: List[str], smtp: bool, workers: int) -> List[Dict]:
-    # Reuse your async bulk verifier
-    return await validate_many_async(emails, smtp_from="noreply@example.com", smtp=smtp, workers=workers)
+    """
+    Call validate_many_async with the correct SMTP flag name by inspecting its signature.
+    Works whether the param is named 'smtp', 'do_smtp', 'smtp_check', etc.
+    """
+    # Build base kwargs
+    kwargs = {"smtp_from": "noreply@example.com", "workers": workers}
+
+    # Detect the correct SMTP-flag parameter name
+    param_names = set(inspect.signature(validate_many_async).parameters.keys())
+    for candidate in ("smtp", "do_smtp", "smtp_check", "perform_smtp", "enable_smtp"):
+        if candidate in param_names:
+            kwargs[candidate] = smtp
+            break  # use the first matching name
+
+    return await validate_many_async(emails, **kwargs)
 
 def verify_chunk(jobid: str, idx: int, chunk: list, smtp: bool, user_id: int, outdir: str):
     """
@@ -38,9 +55,8 @@ def verify_chunk(jobid: str, idx: int, chunk: list, smtp: bool, user_id: int, ou
 
     # Run your async verifier (reusing your existing pipeline)
     async def _run():
-        return await validate_many_async(
+        return await _verify_emails(
             emails,
-            smtp_from="noreply@example.com",
             smtp=smtp,
             workers=int(os.getenv("BULK_WORKERS", "12")),
         )
