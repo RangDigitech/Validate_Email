@@ -60,7 +60,15 @@ def verify_chunk(jobid: str, idx: int, chunk: list, smtp: bool, user_id: int, ou
             smtp=smtp,
             workers=int(os.getenv("BULK_WORKERS", "12")),
         )
-    results = anyio.run(_run)
+    # results = anyio.run(_run)
+    try:
+        results = anyio.run(_run)
+    except Exception as e:
+        # Don’t stall the bar—advance and mark error
+        r.hincrby(f"bulk:{jobid}", "done", len(emails))
+        r.hset(f"bulk:{jobid}", "status", "error")
+        print(f"[BULK][CHUNK-FAIL] jobid={jobid} idx={idx} err={e}")
+        return
 
     # Write a per-chunk CSV (so we can merge later)
     part_dir = Path(outdir)
