@@ -1391,34 +1391,42 @@ def bulk_job_status(jobid: str,
     return payload
 # main.py (add this endpoint)
 @app.get("/bulk/status/{jobid}")
-def bulk_status(jobid: str = Path(...)):
+def bulk_status(jobid: str):
     """
     Returns progress for a bulk job from Redis:
-    { status, total, done, chunks, files? }
+    {
+      jobid, status, total, done, progress, chunks,
+      files: { results_json, results_csv }  # when finished
+    }
     """
     key = f"bulk:{jobid}"
     data = rconn.hgetall(key)
     if not data:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    # hgetall returns bytes -> str
     def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
     m = { _s(k): _s(v) for k, v in data.items() }
 
-    # normalize numbers
     total  = int(m.get("total", "0") or 0)
     done   = int(m.get("done", "0") or 0)
     chunks = int(m.get("chunks", "0") or 0)
     status = m.get("status", "queued")
 
-    resp = {"status": status, "total": total, "done": done, "chunks": chunks}
+    resp = {
+        "jobid": jobid,
+        "status": status,
+        "total": total,
+        "done": done,
+        "progress": (done / total) if total else 0.0,
+        "chunks": chunks,
+    }
 
-    # if the worker stored final files (paths or filenames), include them
-    if "files" in m:
+    # files are stored as a JSON string in Redis; parse if present
+    if "files" in m and m["files"]:
         try:
-            import json as _json
-            resp["files"] = _json.loads(m["files"])
+            resp["files"] = json.loads(m["files"])
         except Exception:
+            # if not JSON, still surface raw string
             resp["files"] = m["files"]
 
     return resp
