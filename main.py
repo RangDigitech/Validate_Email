@@ -47,6 +47,7 @@ from redis import Redis
 from rq import Queue
 from queue_utils import split_csv, init_job, job_status
 from tasks_rq import verify_chunk
+from fastapi import Path
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 rconn = Redis.from_url(REDIS_URL)
@@ -691,16 +692,23 @@ async def file_validation_enqueued(
 
 @app.get("/download/{jobid}/{name}")
 async def download_file(jobid: str, name: str):
-    outdir = JOBS.get(jobid)
+    key = f"bulk:{jobid}"
+    meta = rconn.hgetall(key)
+    if not meta:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    outdir = (meta.get(b"outdir") or b"").decode()
     if not outdir:
-        raise HTTPException(status_code=404, detail="Job not found or has expired.")
-    
+        # fallback: conventional temp dir layout
+        outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
+
+    # only allow known file names
+    if name not in ("results.csv", "results.json"):
+        raise HTTPException(status_code=400, detail="Invalid filename.")
+
     path = os.path.join(outdir, name)
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="File not found.")
-        
-    if name not in ["results.csv", "results.json"]:
-        raise HTTPException(status_code=400, detail="Invalid filename.")
 
     media_type = "text/csv" if name.endswith(".csv") else "application/json"
     return FileResponse(path, media_type=media_type, filename=name)
@@ -1362,25 +1370,34 @@ def bulk_job_status(jobid: str,
     return payload
 # main.py (add this endpoint)
 @app.get("/bulk/status/{jobid}")
-def bulk_status(jobid: str,
-                db: Session = Depends(get_db),
-                current_user: models.User = Depends(security.get_current_user)):
+def bulk_status(jobid: str = Path(...)):
+    """
+    Returns progress for a bulk job from Redis:
+    { status, total, done, chunks, files? }
+    """
     key = f"bulk:{jobid}"
-    h = rconn.hgetall(key)
-    if not h:
+    data = rconn.hgetall(key)
+    if not data:
         raise HTTPException(status_code=404, detail="Job not found")
 
-    owner = (h.get(b"uid") or b"0").decode()
-    if owner != str(current_user.id):
-        raise HTTPException(status_code=403, detail="Forbidden")
+    # hgetall returns bytes -> str
+    def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
+    m = { _s(k): _s(v) for k, v in data.items() }
 
-    status = (h.get(b"status") or b"queued").decode()
-    total  = int((h.get(b"total") or b"0").decode())
-    done   = int((h.get(b"done")  or b"0").decode())
-    chunks = int((h.get(b"chunks") or b"0").decode())
+    # normalize numbers
+    total  = int(m.get("total", "0") or 0)
+    done   = int(m.get("done", "0") or 0)
+    chunks = int(m.get("chunks", "0") or 0)
+    status = m.get("status", "queued")
 
-    # (Optional) list files you pushed for this job
-    files_key = f"job:{jobid}:files"
-    files = [x.decode() for x in rconn.lrange(files_key, 0, -1)]
+    resp = {"status": status, "total": total, "done": done, "chunks": chunks}
 
-    return {"status": status, "total": total, "done": done, "chunks": chunks, "files": files}
+    # if the worker stored final files (paths or filenames), include them
+    if "files" in m:
+        try:
+            import json as _json
+            resp["files"] = _json.loads(m["files"])
+        except Exception:
+            resp["files"] = m["files"]
+
+    return resp
