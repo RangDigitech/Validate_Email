@@ -1430,3 +1430,28 @@ def bulk_status(jobid: str):
             resp["files"] = m["files"]
 
     return resp
+# add near your other bulk routes
+@app.get("/bulk/status")
+def bulk_status_legacy(uid: str):
+    # behave like /bulk/status/{jobid}
+    key = f"bulk:{uid}"
+    data = rconn.hgetall(key)
+    if not data:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
+    m = { _s(k): _s(v) for k, v in data.items() }
+
+    total  = int(m.get("total", "0") or 0)
+    done   = int(m.get("done", "0") or 0)
+    chunks = int(m.get("chunks", "0") or 0)
+    status = m.get("status", "queued")
+
+    resp = {"status": status, "total": total, "done": done, "chunks": chunks}
+    if "files" in m:
+        try:
+            import json as _json
+            resp["files"] = _json.loads(m["files"])
+        except Exception:
+            resp["files"] = m["files"]
+    return resp
