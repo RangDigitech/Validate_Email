@@ -1351,40 +1351,82 @@ async def bulk_enqueue(
     return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
 
 # --- NEW: polling endpoint ---
-# progress.py (or wherever your /bulk/status lives)
-from fastapi import APIRouter, HTTPException, Query
-import json
+@app.get("/bulk/jobs/{jobid}")
+def bulk_job_status(jobid: str,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(security.get_current_user)):
 
-router = APIRouter()
+    meta = rconn.hgetall(f"bulk:{jobid}")  # returns dict of bytes->bytes
+    if not meta:
+        # Optionally fall back to DB BulkJob presence
+        bj = db.query(models.BulkJob).filter(models.BulkJob.id==jobid,
+                    models.BulkJob.user_id==current_user.id).first()
+        if not bj:
+            raise HTTPException(404, "Bulk job not found")
+        return {"jobid": jobid, "status": "unknown"}  # or check DB only
 
-@router.get("/bulk/status")
-def bulk_status(uid: str = Query(...)):
-    key = f"bulk:{uid}"
-    data = r.hgetall(key) or {}
+    meta = {k.decode(): v.decode() for k, v in meta.items()}
+    total = int(meta.get("total", "0"))
+    done = int(meta.get("done", "0"))
+    chunks = int(meta.get("chunks", "0"))
+    status = meta.get("status", "queued")
+    outdir = meta.get("outdir")
 
-    # bytes → str
-    data = {k.decode(): v.decode() for k, v in data.items()}
-
-    # Coerce ints
-    total = int(data.get("total", 0))
-    done  = int(data.get("done", 0))
-    chunks = int(data.get("chunks", 1))
-    status = data.get("status", "pending")
-
-    # Parse files if it’s a JSON string
-    files_raw = data.get("files")
-    files = None
-    if files_raw:
-        try:
-            files = files_raw if isinstance(files_raw, dict) else json.loads(files_raw)
-        except Exception:
-            files = None
-
-    return {
-        "status": status,
-        "done": done,
+    payload = {
+        "jobid": jobid,
         "total": total,
+        "done": done,
+        "progress": (done / total) if total else 0.0,
         "chunks": chunks,
-        "files": files,   # actual dict
-        "outdir": data.get("outdir"),
+        "status": status,
     }
+
+    # When done, expose download URLs (reuse your /download endpoint if you like)
+    if status == "finished":
+        payload["files"] = {
+            "results_json": f"/download/{jobid}/results.json",
+            "results_csv":  f"/download/{jobid}/results.csv",
+        }
+
+    return payload
+# main.py (add this endpoint)
+@app.get("/bulk/status/{jobid}")
+def bulk_status(jobid: str):
+    """
+    Returns progress for a bulk job from Redis:
+    {
+      jobid, status, total, done, progress, chunks,
+      files: { results_json, results_csv }  # when finished
+    }
+    """
+    key = f"bulk:{jobid}"
+    data = rconn.hgetall(key)
+    if not data:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
+    m = { _s(k): _s(v) for k, v in data.items() }
+
+    total  = int(m.get("total", "0") or 0)
+    done   = int(m.get("done", "0") or 0)
+    chunks = int(m.get("chunks", "0") or 0)
+    status = m.get("status", "queued")
+
+    resp = {
+        "jobid": jobid,
+        "status": status,
+        "total": total,
+        "done": done,
+        "progress": (done / total) if total else 0.0,
+        "chunks": chunks,
+    }
+
+    # files are stored as a JSON string in Redis; parse if present
+    if "files" in m and m["files"]:
+        try:
+            resp["files"] = json.loads(m["files"])
+        except Exception:
+            # if not JSON, still surface raw string
+            resp["files"] = m["files"]
+
+    return resp
