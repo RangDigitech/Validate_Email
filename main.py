@@ -48,8 +48,6 @@ from rq import Queue
 from queue_utils import split_csv, init_job, job_status
 from tasks_rq import verify_chunk
 from fastapi import Path
-from queue_utils import enqueue_job, job_status, init_progress
-from uuid import uuid4
 
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
@@ -1318,80 +1316,41 @@ def admin_deactivated_users(
 ):
     rows = db.query(models.User).where(models.User.is_active == False).all()
     return [{"id": u.id, "email": u.email} for u in rows]
-def split_csv(file_obj, chunk_size: int, outdir: str):
-    import csv, os
-    os.makedirs(outdir, exist_ok=True)
-    reader = csv.reader(file_obj.read().decode("utf-8").splitlines())
-    headers = next(reader, None)
-    chunks = []
-    batch = []
-    idx = 0
-
-    for row in reader:
-        batch.append(row)
-        if len(batch) >= chunk_size:
-            chunk_path = os.path.join(outdir, f"chunk_{idx}.csv")
-            with open(chunk_path, "w", newline="") as f:
-                w = csv.writer(f)
-                if headers:
-                    w.writerow(headers)
-                w.writerows(batch)
-            chunks.append(chunk_path)
-            batch = []
-            idx += 1
-
-    if batch:
-        chunk_path = os.path.join(outdir, f"chunk_{idx}.csv")
-        with open(chunk_path, "w", newline="") as f:
-            w = csv.writer(f)
-            if headers:
-                w.writerow(headers)
-            w.writerows(batch)
-        chunks.append(chunk_path)
-
-    return chunks
-
-@app.post("/validate-file")
+@app.post("/bulk/enqueue")
 async def bulk_enqueue(
-    source: str = Query(..., regex="^bulk$"),
     file: UploadFile = File(...),
-    smtp: bool = Form(True),
-    workers: int = Form(1),
+    smtp: bool = Form(False),
+    workers: int = Form(12)
 ):
-    if source != "bulk":
-        raise HTTPException(status_code=400, detail="Only bulk source supported here")
+    jobs_dir = Path("./jobs")
+    jobs_dir.mkdir(parents=True, exist_ok=True)
 
-    jobid = uuid4().hex
-    outdir = f"/tmp/results_{jobid}"
+    jobid = str(uuid.uuid4())
+    upload_path = jobs_dir / f"{jobid}_{file.filename}"
+    with upload_path.open("wb") as f:
+        f.write(await file.read())
 
-    # Read + split CSV
-    contents = await file.read()
-    from io import BytesIO
-    csvfile = BytesIO(contents)
-    chunks = split_csv(csvfile, CHUNK_SIZE, outdir)
-    total_chunks = len(chunks)
+    # Split into chunks and initialize progress
+    chunks = split_csv(str(upload_path))
+    # Quick count (header-aware)
+    total_rows = max(0, sum(1 for _ in upload_path.open(encoding="utf-8")) - 1)
+    init_job(jobid, total_rows=total_rows, chunk_count=len(chunks))
 
-    if total_chunks == 0:
-        raise HTTPException(status_code=400, detail="No emails found")
-
-    # Initialize progress in Redis
-    # You can compute total_emails if you want, or set later; for now use 0
-    init_progress(jobid, total_chunks=total_chunks, total_emails=0)
-
-    # Enqueue each chunk
-    for idx, ch_path in enumerate(chunks):
-        enqueue_job(
-            "bulk",
+    # Enqueue each chunk to RQ
+    for c in chunks:
+        rq_q.enqueue(
+            verify_chunk,
             jobid,
-            "tasks_rq.verify_chunk",
-            [jobid, idx, ch_path, smtp, workers, outdir],
+            c,
+            smtp,
+            workers,
+            job_timeout="8h",
+            result_ttl=86400,
+            failure_ttl=86400
         )
 
-    return {
-        "jobid": jobid,
-        "chunks": total_chunks,
-        "status": "queued",
-    }
+    return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
+
 # --- NEW: polling endpoint ---
 @app.get("/bulk/jobs/{jobid}")
 def bulk_job_status(jobid: str,

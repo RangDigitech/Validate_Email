@@ -7,65 +7,6 @@ from typing import Any, Dict, List
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 PROGRESS_KEY = "job:{jobid}:progress"
 RESULTS_KEY  = "job:{jobid}:files"
-import csv
-from pathlib import Path
-from typing import List
-
-CHUNK_SIZE = 1000  # adjust if you want bigger/smaller chunks
-
-def split_csv(csv_path: str | Path, chunk_size: int = CHUNK_SIZE) -> List[str]:
-    """
-    Split a CSV file into smaller chunk files with the same header.
-
-    Returns a list of chunk file paths (as strings).
-    Assumes there is an 'email' column in the header.
-    """
-    csv_path = Path(csv_path)
-    if not csv_path.exists():
-        raise FileNotFoundError(f"CSV file not found: {csv_path}")
-
-    # Create a per-upload chunk directory next to the original file
-    outdir = csv_path.parent / f"chunks_{csv_path.stem}"
-    outdir.mkdir(parents=True, exist_ok=True)
-
-    chunks: list[str] = []
-
-    with csv_path.open("r", newline="", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        fieldnames = reader.fieldnames or []
-
-        if "email" not in fieldnames:
-            raise ValueError("CSV must contain an 'email' column in the header.")
-
-        buffer: list[dict] = []
-        chunk_index = 0
-
-        def flush_buffer():
-            nonlocal chunk_index, buffer
-            if not buffer:
-                return
-            chunk_file = outdir / f"{csv_path.stem}_part{chunk_index}.csv"
-            with chunk_file.open("w", newline="", encoding="utf-8") as cf:
-                writer = csv.DictWriter(cf, fieldnames=fieldnames)
-                writer.writeheader()
-                writer.writerows(buffer)
-            chunks.append(str(chunk_file))
-            buffer = []
-            chunk_index += 1
-
-        for row in reader:
-            # Skip rows without an email
-            email = (row.get("email") or "").strip()
-            if not email:
-                continue
-            buffer.append(row)
-            if len(buffer) >= chunk_size:
-                flush_buffer()
-
-        # Last chunk
-        flush_buffer()
-
-    return chunks
 
 
 def _get_redis():
