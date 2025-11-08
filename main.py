@@ -48,6 +48,9 @@ from rq import Queue
 from queue_utils import split_csv, init_job, job_status
 from tasks_rq import verify_chunk
 from fastapi import Path
+from queue_utils import enqueue_job, job_status, init_progress
+from uuid import uuid4
+
 
 REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 rconn = Redis.from_url(REDIS_URL)
@@ -1315,41 +1318,80 @@ def admin_deactivated_users(
 ):
     rows = db.query(models.User).where(models.User.is_active == False).all()
     return [{"id": u.id, "email": u.email} for u in rows]
-@app.post("/bulk/enqueue")
+def split_csv(file_obj, chunk_size: int, outdir: str):
+    import csv, os
+    os.makedirs(outdir, exist_ok=True)
+    reader = csv.reader(file_obj.read().decode("utf-8").splitlines())
+    headers = next(reader, None)
+    chunks = []
+    batch = []
+    idx = 0
+
+    for row in reader:
+        batch.append(row)
+        if len(batch) >= chunk_size:
+            chunk_path = os.path.join(outdir, f"chunk_{idx}.csv")
+            with open(chunk_path, "w", newline="") as f:
+                w = csv.writer(f)
+                if headers:
+                    w.writerow(headers)
+                w.writerows(batch)
+            chunks.append(chunk_path)
+            batch = []
+            idx += 1
+
+    if batch:
+        chunk_path = os.path.join(outdir, f"chunk_{idx}.csv")
+        with open(chunk_path, "w", newline="") as f:
+            w = csv.writer(f)
+            if headers:
+                w.writerow(headers)
+            w.writerows(batch)
+        chunks.append(chunk_path)
+
+    return chunks
+
+@app.post("/validate-file")
 async def bulk_enqueue(
+    source: str = Query(..., regex="^bulk$"),
     file: UploadFile = File(...),
-    smtp: bool = Form(False),
-    workers: int = Form(12)
+    smtp: bool = Form(True),
+    workers: int = Form(1),
 ):
-    jobs_dir = Path("./jobs")
-    jobs_dir.mkdir(parents=True, exist_ok=True)
+    if source != "bulk":
+        raise HTTPException(status_code=400, detail="Only bulk source supported here")
 
-    jobid = str(uuid.uuid4())
-    upload_path = jobs_dir / f"{jobid}_{file.filename}"
-    with upload_path.open("wb") as f:
-        f.write(await file.read())
+    jobid = uuid4().hex
+    outdir = f"/tmp/results_{jobid}"
 
-    # Split into chunks and initialize progress
-    chunks = split_csv(str(upload_path))
-    # Quick count (header-aware)
-    total_rows = max(0, sum(1 for _ in upload_path.open(encoding="utf-8")) - 1)
-    init_job(jobid, total_rows=total_rows, chunk_count=len(chunks))
+    # Read + split CSV
+    contents = await file.read()
+    from io import BytesIO
+    csvfile = BytesIO(contents)
+    chunks = split_csv(csvfile, CHUNK_SIZE, outdir)
+    total_chunks = len(chunks)
 
-    # Enqueue each chunk to RQ
-    for c in chunks:
-        rq_q.enqueue(
-            verify_chunk,
+    if total_chunks == 0:
+        raise HTTPException(status_code=400, detail="No emails found")
+
+    # Initialize progress in Redis
+    # You can compute total_emails if you want, or set later; for now use 0
+    init_progress(jobid, total_chunks=total_chunks, total_emails=0)
+
+    # Enqueue each chunk
+    for idx, ch_path in enumerate(chunks):
+        enqueue_job(
+            "bulk",
             jobid,
-            c,
-            smtp,
-            workers,
-            job_timeout="8h",
-            result_ttl=86400,
-            failure_ttl=86400
+            "tasks_rq.verify_chunk",
+            [jobid, idx, ch_path, smtp, workers, outdir],
         )
 
-    return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
-
+    return {
+        "jobid": jobid,
+        "chunks": total_chunks,
+        "status": "queued",
+    }
 # --- NEW: polling endpoint ---
 @app.get("/bulk/jobs/{jobid}")
 def bulk_job_status(jobid: str,
@@ -1431,27 +1473,3 @@ def bulk_status(jobid: str):
 
     return resp
 # add near your other bulk routes
-@app.get("/bulk/status")
-def bulk_status_legacy(uid: str):
-    # behave like /bulk/status/{jobid}
-    key = f"bulk:{uid}"
-    data = rconn.hgetall(key)
-    if not data:
-        raise HTTPException(status_code=404, detail="Job not found")
-
-    def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
-    m = { _s(k): _s(v) for k, v in data.items() }
-
-    total  = int(m.get("total", "0") or 0)
-    done   = int(m.get("done", "0") or 0)
-    chunks = int(m.get("chunks", "0") or 0)
-    status = m.get("status", "queued")
-
-    resp = {"status": status, "total": total, "done": done, "chunks": chunks}
-    if "files" in m:
-        try:
-            import json as _json
-            resp["files"] = _json.loads(m["files"])
-        except Exception:
-            resp["files"] = m["files"]
-    return resp
