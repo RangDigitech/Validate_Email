@@ -45,7 +45,7 @@ import os, uuid
 from pathlib import Path
 from redis import Redis
 from rq import Queue
-from queue_utils import split_csv, init_job, job_status
+from queue_utils import init_job, job_status
 from tasks_rq import verify_chunk
 from fastapi import Path
 
