@@ -40,6 +40,7 @@ from sqlalchemy import extract
 from pydantic import BaseModel ,EmailStr
 from sqlalchemy import func
 from routes.contact import router as contact_router
+from blog_routes import router as blog_router
 
 
 class _UserStatusIn(BaseModel):
@@ -59,8 +60,8 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
@@ -75,6 +76,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Email Verifier API", version="3.0")
 app.include_router(contact_router,prefix="/api")
+
+app.include_router(blog_router)
+
 # In-memory job store (for a real app, use a database or Redis)
 JOBS = {}
 
