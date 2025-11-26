@@ -1,0 +1,166 @@
+{
+  "results": [
+    {
+      "email": "jjones@intevaproducts.com",
+      "local_part": "jjones",
+      "domain": "intevaproducts.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mxa-002bf002.gslb.pphosted.com",
+        "mxb-002bf002.gslb.pphosted.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mxa-002bf002.gslb.pphosted.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mxa-002bf002.gslb.pphosted.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "jnunez@fertilityauthority.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "fertilityauthority.com"
+    },
+    {
+      "email": "blynne@pridescorner.com",
+      "local_part": "blynne",
+      "domain": "pridescorner.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx2.sprintserve.net",
+        "mx1.sprintserve.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx2.sprintserve.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx2.sprintserve.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    }
+  ]
+}

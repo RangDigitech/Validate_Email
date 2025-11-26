@@ -1,0 +1,5807 @@
+{
+  "results": [
+    {
+      "email": "robert@kerneyandassociates.com",
+      "local_part": "robert",
+      "domain": "kerneyandassociates.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "kerneyandassociates-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "kerneyandassociates-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C37A.namprd04.prod.outlook.com 2025-11-17T12:36:08.204Z 08DE2457AF972D7E]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C37F.namprd04.prod.outlook.com 2025-11-17T12:36:08.191Z 08DE244AF3399F6C]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "kerneyandassociates-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "kelly@bioelements.com",
+      "local_part": "kelly",
+      "domain": "bioelements.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "bioelements-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "bioelements-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C381.namprd04.prod.outlook.com 2025-11-17T12:36:08.149Z 08DE2431D158AB00]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C37E.namprd04.prod.outlook.com 2025-11-17T12:36:08.138Z 08DE24267250559A]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "bioelements-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "pekka@fbcmooresville.com",
+      "local_part": "pekka",
+      "domain": "fbcmooresville.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "alt3.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37a42a935si6152854a12.1525 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37731e009si6771895a12.887 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c23277dsi70746745ad.74 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "john@wedgeroofing.com",
+      "local_part": "john",
+      "domain": "wedgeroofing.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "wedgeroofing-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "wedgeroofing-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BN2PEPF000055DD.namprd21.prod.outlook.com 2025-11-17T12:36:15.545Z 08DE253BA21E596A]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BN2PEPF000055DA.namprd21.prod.outlook.com 2025-11-17T12:36:15.788Z 08DE250B20217469]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "wedgeroofing-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "roger@schooloffice.com",
+      "local_part": "roger",
+      "domain": "schooloffice.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "linq-com.mail.protection.outlook.com",
+        "mailout.schooloffice.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "linq-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD7C.namprd04.prod.outlook.com 2025-11-17T12:36:10.340Z 08DE243A69E2503B]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD80.namprd04.prod.outlook.com 2025-11-17T12:36:10.245Z 08DE2469F7B077C2]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "linq-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "bill@beckynickol.com",
+      "local_part": "bill",
+      "domain": "beckynickol.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "beckynickol-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "beckynickol-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "beckynickol-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "bernice@1ststatechevy.com",
+      "local_part": "bernice",
+      "domain": "1ststatechevy.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx2.emailsrvr.com",
+        "mx1.emailsrvr.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx2.emailsrvr.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx2.emailsrvr.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "stan@northwestclosets.com",
+      "local_part": "stan",
+      "domain": "northwestclosets.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "alt3.aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc376797305si5855072a12.677 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d2e1a72fcca58-7b9294e8623si6500081b3a.1004 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d2e1a72fcca58-7b92820aa29si6459332b3a.437 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "paul@sandacom.com",
+      "local_part": "paul",
+      "domain": "sandacom.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx00.1and1.com",
+        "mx01.1and1.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx00.1and1.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx00.1and1.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "don@lloyd-architects.com",
+      "local_part": "don",
+      "domain": "lloyd-architects.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "lloydarchitects-com01c.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "lloydarchitects-com01c.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "lloydarchitects-com01c.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "burgess@bensonfuneralhome.com",
+      "local_part": "burgess",
+      "domain": "bensonfuneralhome.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "bensonfuneralhome-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "bensonfuneralhome-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [MN1PEPF0000F0E2.namprd04.prod.outlook.com 2025-11-17T12:36:20.601Z 08DE24343B45FD0C]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [MN1PEPF0000F0E1.namprd04.prod.outlook.com 2025-11-17T12:36:21.304Z 08DE245B8F13FA83]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [MN1PEPF0000F0E2.namprd04.prod.outlook.com 2025-11-17T12:36:21.463Z 08DE24343B45FE6D]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "bensonfuneralhome-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "kim@nonprofitimpact.com",
+      "local_part": "kim",
+      "domain": "nonprofitimpact.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt3.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c2ccc22si67273835ad.700 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc3839c56c5si6009568a12.1315 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37573a268si6778521a12.470 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "wyron@insite-architects.com",
+      "local_part": "wyron",
+      "domain": "insite-architects.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "insitearchitects-com01e.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "insitearchitects-com01e.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SN1PEPF0002BA4F.namprd03.prod.outlook.com 2025-11-17T12:36:17.818Z 08DE243925C42C71]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SN1PEPF0002BA4E.namprd03.prod.outlook.com 2025-11-17T12:36:18.411Z 08DE241AB6DC315E]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SN1PEPF0002BA52.namprd03.prod.outlook.com 2025-11-17T12:36:19.349Z 08DE242848B301B7]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "insitearchitects-com01e.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "cheryl@larsoncontracting.com",
+      "local_part": "cheryl",
+      "domain": "larsoncontracting.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx.wctatel.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx.wctatel.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx.wctatel.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "brian@sxsw.com",
+      "local_part": "brian",
+      "domain": "sxsw.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "smtp.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "smtp.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc377133b87si6509353a12.880 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37582e570si6442494a12.462 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc3778dffccsi6430513a12.1018 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "smtp.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "donald@nemrc.com",
+      "local_part": "donald",
+      "domain": "nemrc.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "alt3.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 OK 41be03b00d2f7-bc3797aaf22si6154739a12.1373 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 OK 41be03b00d2f7-bc37582eca9si6274051a12.334 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 OK d2e1a72fcca58-7b928900e1csi6848303b3a.679 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "maria@cinhc.org",
+      "local_part": "maria",
+      "domain": "cinhc.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "cinhc.org"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": true,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 50,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "cinhc.org",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "cinhc.org",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "judy@fmchamber.com",
+      "local_part": "judy",
+      "domain": "fmchamber.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "smtp1-msp.securence.com",
+        "smtp1-mke.securence.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "smtp1-msp.securence.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "smtp1-msp.securence.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "courtney@qualcomm.com",
+      "local_part": "courtney",
+      "domain": "qualcomm.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mxa-0031df01.gslb.pphosted.com",
+        "mxb-0031df01.gslb.pphosted.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mxa-0031df01.gslb.pphosted.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mxa-0031df01.gslb.pphosted.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 8,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "bill@ilehrhoff.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "ilehrhoff.com"
+    },
+    {
+      "email": "renee@yesasia.com",
+      "local_part": "renee",
+      "domain": "yesasia.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "yesasia-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "yesasia-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SG1PEPF000082E8.apcprd02.prod.outlook.com 2025-11-17T12:36:09.064Z 08DE2433D700BE66]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SG1PEPF000082E7.apcprd02.prod.outlook.com 2025-11-17T12:36:08.914Z 08DE245CEA70F513]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SG1PEPF000082E6.apcprd02.prod.outlook.com 2025-11-17T12:36:08.815Z 08DE244DFD7DC05F]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "yesasia-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "eamon@cuesol.com",
+      "local_part": "eamon",
+      "domain": "cuesol.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "cuesol.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "cuesol.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "cuesol.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "frank@waypointhomes.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain waypointhomes.com",
+      "score": 0,
+      "domain": "waypointhomes.com"
+    },
+    {
+      "email": "ryan@dallaschild.com",
+      "local_part": "ryan",
+      "domain": "dallaschild.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx4.googlemail.com",
+        "aspmx3.googlemail.com",
+        "alt1.aspmx.l.google.com",
+        "aspmx2.googlemail.com",
+        "aspmx5.googlemail.com",
+        "aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx4.googlemail.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 5a478bee46e88-2a49da0674esi15615976eec.49 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 5a478bee46e88-2a49da06638si16235099eec.38 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 5a478bee46e88-2a49da06591si16202672eec.47 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx4.googlemail.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "john@thepalladiangroup.com",
+      "local_part": "john",
+      "domain": "thepalladiangroup.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "aspmx2.googlemail.com",
+        "aspmx3.googlemail.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c2ceb2asi66286465ad.731 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 98e67ed59e1d1-343ed4b5291si7219039a91.2 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc3797ab31asi6400394a12.1380 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "jennifer@solutionsbysusan.com",
+      "local_part": "jennifer",
+      "domain": "solutionsbysusan.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "solutionsbysusan.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": true,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 50,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "solutionsbysusan.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "solutionsbysusan.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 8,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "gary@mastercoaches.com",
+      "local_part": "gary",
+      "domain": "mastercoaches.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mastercoaches.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mastercoaches.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mastercoaches.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "george@longlawoffices.com",
+      "local_part": "george",
+      "domain": "longlawoffices.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "aspmx.l.google.com",
+        "aspmx2.googlemail.com",
+        "aspmx3.googlemail.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt1.aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc36d843d2bsi6220010a12.284 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c231eb3si66663425ad.1 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c2c3548si65808675ad.639 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt1.aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "josee@montereycountybank.com",
+      "local_part": "josee",
+      "domain": "montereycountybank.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "montereycountybank-com.inbound.emailservice.co",
+        "montereycountybank-com.inbound.emailservice.io",
+        "montereycountybank-com.inbound.emailservice.cc"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "montereycountybank-com.inbound.emailservice.co",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "montereycountybank-com.inbound.emailservice.co",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "breann@ideationgifts.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "ideationgifts.com"
+    },
+    {
+      "email": "kevin@wvwa.org",
+      "local_part": "kevin",
+      "domain": "wvwa.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "aspmx3.googlemail.com",
+        "aspmx2.googlemail.com",
+        "aspmx5.googlemail.com",
+        "aspmx4.googlemail.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 OK d2e1a72fcca58-7b9250ca24fsi6569588b3a.204 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 OK d2e1a72fcca58-7b928900c27si6427191b3a.675 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 OK 41be03b00d2f7-bc37688c036si6169267a12.686 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "linda@copricoprinting.com",
+      "local_part": "linda",
+      "domain": "copricoprinting.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx1.forwardemail.net",
+        "mx2.forwardemail.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx1.forwardemail.net",
+          "target": {
+            "code": 503,
+            "message": "5.5.1 Error: need MAIL command",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 503,
+            "message": "5.5.1 Error: need MAIL command",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 503,
+            "message": "5.5.1 Error: need MAIL command",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Other",
+      "mx_record": "mx1.forwardemail.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        503,
+        503,
+        503
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "brad@ambroseprint.com",
+      "local_part": "brad",
+      "domain": "ambroseprint.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "d187283a.ess.barracudanetworks.com",
+        "d187283b.ess.barracudanetworks.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "d187283a.ess.barracudanetworks.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "d187283a.ess.barracudanetworks.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "joe@wrightconcrete.com",
+      "local_part": "joe",
+      "domain": "wrightconcrete.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "wrightconcrete-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "wrightconcrete-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF0001AB4C.namprd04.prod.outlook.com 2025-11-17T12:36:23.235Z 08DE240EF11F4683]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF0001AB4D.namprd04.prod.outlook.com 2025-11-17T12:36:23.229Z 08DE2425F259CC15]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF0001AB4B.namprd04.prod.outlook.com 2025-11-17T12:36:23.221Z 08DE2446AF376A42]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "wrightconcrete-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "joseph@ctrf.com",
+      "local_part": "joseph",
+      "domain": "ctrf.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "ctrf-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "ctrf-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "ctrf-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "sharon@unm.edu",
+      "local_part": "sharon",
+      "domain": "unm.edu",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "unm-edu.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "unm-edu.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C37F.namprd04.prod.outlook.com 2025-11-17T12:36:26.285Z 08DE244AF339B248]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF0000C37D.namprd04.prod.outlook.com 2025-11-17T12:36:26.586Z 08DE243E658F86A3]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "unm-edu.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "eric@techsoft3d.com",
+      "local_part": "eric",
+      "domain": "techsoft3d.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "techsoft3d-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "techsoft3d-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL02EPF0001A0FF.namprd03.prod.outlook.com 2025-11-17T12:36:28.065Z 08DE241EF66AB1BF]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL02EPF0001A0FE.namprd03.prod.outlook.com 2025-11-17T12:36:28.006Z 08DE245EA27EDAA5]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "techsoft3d-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "rachel@bellefourche.org",
+      "local_part": "rachel",
+      "domain": "bellefourche.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "bellefourche-org.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 87,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "bellefourche-org.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SJ1PEPF000023D8.namprd21.prod.outlook.com 2025-11-17T12:36:37.421Z 08DE254E8504E270]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [SJ1PEPF000023D7.namprd21.prod.outlook.com 2025-11-17T12:36:37.426Z 08DE254036958DF2]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "bellefourche-org.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "angela@cw-law.net",
+      "local_part": "angela",
+      "domain": "cw-law.net",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "cwlaw-net0e.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "cwlaw-net0e.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "cwlaw-net0e.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "roger@metrohybrid.com",
+      "local_part": "roger",
+      "domain": "metrohybrid.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx1-us1.ppe-hosted.com",
+        "mx2-us1.ppe-hosted.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx1-us1.ppe-hosted.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx1-us1.ppe-hosted.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "scott@stamfordcu.org",
+      "local_part": "scott",
+      "domain": "stamfordcu.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "stamfordcu-org.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "stamfordcu-org.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF00022570.namprd02.prod.outlook.com 2025-11-17T12:36:33.614Z 08DE2459EDCBF355]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF0002256F.namprd02.prod.outlook.com 2025-11-17T12:36:33.765Z 08DE243DA424AD01]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL6PEPF0002256E.namprd02.prod.outlook.com 2025-11-17T12:36:34.182Z 08DE24265334B115]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "stamfordcu-org.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "bryan@michaels.com",
+      "local_part": "bryan",
+      "domain": "michaels.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mxa-005f4f01.gslb.pphosted.com",
+        "mxb-005f4f01.gslb.pphosted.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mxa-005f4f01.gslb.pphosted.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mxa-005f4f01.gslb.pphosted.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "lynn@canyoneers.com",
+      "local_part": "lynn",
+      "domain": "canyoneers.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx20.antispam.mailspamprotection.com",
+        "mx10.antispam.mailspamprotection.com",
+        "mx30.antispam.mailspamprotection.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx20.antispam.mailspamprotection.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx20.antispam.mailspamprotection.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "carrie@vfc.com",
+      "local_part": "carrie",
+      "domain": "vfc.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "vfc-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "vfc-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "vfc-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "hank@centralplumbingspec.com",
+      "local_part": "hank",
+      "domain": "centralplumbingspec.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx002.register.xion.oxcs.net",
+        "mx001.register.xion.oxcs.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx002.register.xion.oxcs.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx002.register.xion.oxcs.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "diana@amchiropractor.com",
+      "local_part": "diana",
+      "domain": "amchiropractor.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx.l.google.com",
+        "aspmx2.googlemail.com",
+        "aspmx3.googlemail.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc378f0015asi6463240a12.1264 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d2e1a72fcca58-7b928eea4c3si6566916b3a.846 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37a42a935si6153311a12.1525 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "michael@visioncareinc.net",
+      "local_part": "michael",
+      "domain": "visioncareinc.net",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "visioncareinc.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": true,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 50,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "visioncareinc.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "visioncareinc.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "jeff@nmsmoving.com",
+      "local_part": "jeff",
+      "domain": "nmsmoving.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "nmsmoving-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "nmsmoving-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD7F.namprd04.prod.outlook.com 2025-11-17T12:36:38.093Z 08DE241AA245BB02]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD7E.namprd04.prod.outlook.com 2025-11-17T12:36:38.016Z 08DE244579DA2BA3]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD7D.namprd04.prod.outlook.com 2025-11-17T12:36:38.962Z 08DE242905924667]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "nmsmoving-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "bonita@kidswhocare.org",
+      "local_part": "bonita",
+      "domain": "kidswhocare.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "kidswhocare-org.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "kidswhocare-org.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF00000147.namprd02.prod.outlook.com 2025-11-17T12:36:35.157Z 08DE245BD2C129D4]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF00000148.namprd02.prod.outlook.com 2025-11-17T12:36:35.189Z 08DE240EE0411FB3]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF00000145.namprd02.prod.outlook.com 2025-11-17T12:36:35.464Z 08DE244D6CFC35C7]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "kidswhocare-org.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "lindsay@columbiapartners.com",
+      "local_part": "lindsay",
+      "domain": "columbiapartners.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "columbiapartners-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "columbiapartners-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "columbiapartners-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "james@lrsionline.net",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "lrsionline.net"
+    },
+    {
+      "email": "crystal@logicsound.com",
+      "local_part": "crystal",
+      "domain": "logicsound.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx2.googlemail.com",
+        "aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx2.googlemail.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc3839c59cdsi6492857a12.1328 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37a718ed9si6320345a12.1548 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 98e67ed59e1d1-343ed578bb1si4791807a91.53 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx2.googlemail.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "renee@smalltownlifemagazine.com",
+      "local_part": "renee",
+      "domain": "smalltownlifemagazine.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx1.dreamhost.com",
+        "mx2.dreamhost.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx1.dreamhost.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx1.dreamhost.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "aaron@frontrangecatering.com",
+      "local_part": "aaron",
+      "domain": "frontrangecatering.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "aspmx2.googlemail.com",
+        "aspmx3.googlemail.com",
+        "aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "aspmx2.googlemail.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-299bc3cfa4asi41460095ad.154 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc36db27224si6250505a12.263 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d2e1a72fcca58-7b924aeee4dsi6922178b3a.59 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "aspmx2.googlemail.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "stephen@heritageremodeling.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "heritageremodeling.com"
+    },
+    {
+      "email": "wilson@ryerx.com",
+      "local_part": "wilson",
+      "domain": "ryerx.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "lastmx.spamexperts.net",
+        "mx.spamexperts.com",
+        "fallbackmx.spamexperts.eu"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "lastmx.spamexperts.net",
+          "target": {
+            "code": 550,
+            "message": "Access denied - Invalid HELO name (See RFC5321 4.1.1.1)",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "Access denied - Invalid HELO name (See RFC5321 4.1.1.1)",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "Access denied - Invalid HELO name (See RFC5321 4.1.1.1)",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Other",
+      "mx_record": "lastmx.spamexperts.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "jason@stcloudrealtors.com",
+      "local_part": "jason",
+      "domain": "stcloudrealtors.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "stcloudrealtors-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "stcloudrealtors-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "stcloudrealtors-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "liz@northheartland.org",
+      "local_part": "liz",
+      "domain": "northheartland.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "northheartland-org.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "northheartland-org.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD7C.namprd04.prod.outlook.com 2025-11-17T12:36:39.677Z 08DE243A69E271DE]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD83.namprd04.prod.outlook.com 2025-11-17T12:36:39.635Z 08DE245EB9C56626]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH1PEPF0000AD82.namprd04.prod.outlook.com 2025-11-17T12:36:39.571Z 08DE240E69FB334A]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "northheartland-org.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "michael@nizamian.com",
+      "local_part": "michael",
+      "domain": "nizamian.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mail.nizamian.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mail.nizamian.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mail.nizamian.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "robert@mcdonalds.com",
+      "local_part": "robert",
+      "domain": "mcdonalds.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "sesmail.mcdonalds.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "sesmail.mcdonalds.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "sesmail.mcdonalds.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "jennifer@blecherhubbell.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "blecherhubbell.com"
+    },
+    {
+      "email": "david@expresswayusa.com",
+      "local_part": "david",
+      "domain": "expresswayusa.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "expresswayusa-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "expresswayusa-com.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "expresswayusa-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "adam@dynamark-engineering.com",
+      "local_part": "adam",
+      "domain": "dynamark-engineering.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "dynamarkengineering-com02b.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "dynamarkengineering-com02b.mail.protection.outlook.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.5 Recipient OK",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Microsoft",
+      "mx_record": "dynamarkengineering-com02b.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "jerry@ssi-online.org",
+      "local_part": "jerry",
+      "domain": "ssi-online.org",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "ssionline-org0i.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "ssionline-org0i.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL02EPF0001A105.namprd05.prod.outlook.com 2025-11-17T12:36:43.638Z 08DE242630C6D1F4]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL02EPF0001A104.namprd05.prod.outlook.com 2025-11-17T12:36:43.572Z 08DE2457BAD9DAB2]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BL02EPF0001A103.namprd05.prod.outlook.com 2025-11-17T12:36:43.709Z 08DE241A621E000C]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "ssionline-org0i.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "stacy@dtitrucks.com",
+      "local_part": "stacy",
+      "domain": "dtitrucks.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "dtitrucks-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "dtitrucks-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CY4PEPF0000EE30.namprd05.prod.outlook.com 2025-11-17T12:36:44.559Z 08DE24430D5A0BC3]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CY4PEPF0000EE31.namprd05.prod.outlook.com 2025-11-17T12:36:44.469Z 08DE242AF6E33CA4]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CY4PEPF0000EE37.namprd05.prod.outlook.com 2025-11-17T12:36:44.421Z 08DE2410C51B1FC9]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "dtitrucks-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "james@alienkungfu.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "alienkungfu.com"
+    },
+    {
+      "email": "teri@vootie.com",
+      "local_part": "teri",
+      "domain": "vootie.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt2.aspmx.l.google.com",
+        "aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "aspmx2.googlemail.com",
+        "aspmx3.googlemail.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt2.aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d2e1a72fcca58-7b924aee777si6883784b3a.116 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37827dcabsi6454029a12.1089 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc378188847si6029565a12.1092 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt2.aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "jagjig@sheris.com",
+      "local_part": "jagjig",
+      "domain": "sheris.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "sheris-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "sheris-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF000099D9.namprd04.prod.outlook.com 2025-11-17T12:36:44.602Z 08DE240FB795960C]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF000099D7.namprd04.prod.outlook.com 2025-11-17T12:36:44.614Z 08DE245FB16E70E0]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [DS3PEPF000099D8.namprd04.prod.outlook.com 2025-11-17T12:36:44.574Z 08DE244675DF6AB4]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "sheris-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "lourdes@innovativepublishing.com",
+      "local_part": "lourdes",
+      "domain": "innovativepublishing.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt2.aspmx.l.google.com",
+        "alt1.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com",
+        "alt3.aspmx.l.google.com",
+        "aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt2.aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc36d8415d0si6903781a12.161 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc36da2cdb8si6041073a12.299 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 41be03b00d2f7-bc37582f46csi6225181a12.537 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt2.aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "steven@jmimechanical.com",
+      "local_part": "steven",
+      "domain": "jmimechanical.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mail3.us.scanscope.net",
+        "mail2.us.scanscope.net",
+        "mail1.us.scanscope.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mail3.us.scanscope.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mail3.us.scanscope.net",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 6,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "jim@parkmanorsuites.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "parkmanorsuites.com"
+    },
+    {
+      "email": "ray@schneiderdesign.com",
+      "local_part": "ray",
+      "domain": "schneiderdesign.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "_dc-mx.c3a836f0f221.schneiderdesign.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "_dc-mx.c3a836f0f221.schneiderdesign.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "_dc-mx.c3a836f0f221.schneiderdesign.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "scott@adamas.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "adamas.com"
+    },
+    {
+      "email": "tom@valutech.com",
+      "local_part": "tom",
+      "domain": "valutech.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "valutech-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "valutech-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BN3PEPF0000B074.namprd04.prod.outlook.com 2025-11-17T12:36:45.658Z 08DE242329180DED]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BN3PEPF0000B071.namprd04.prod.outlook.com 2025-11-17T12:36:45.605Z 08DE2418771633A3]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [BN3PEPF0000B078.namprd04.prod.outlook.com 2025-11-17T12:36:45.743Z 08DE2444A676CF53]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "valutech-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "phid@microtech.com",
+      "local_part": "phid",
+      "domain": "microtech.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "server22.appriver.com",
+        "server21.appriver.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "server22.appriver.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "server22.appriver.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "bill@dpboothlaw.com",
+      "local_part": "bill",
+      "domain": "dpboothlaw.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx1.emailsrvr.com",
+        "mx2.emailsrvr.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx1.emailsrvr.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx1.emailsrvr.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "deb@lagymnastics.com",
+      "local_part": "deb",
+      "domain": "lagymnastics.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt1.aspmx.l.google.com",
+        "aspmx.l.google.com",
+        "alt3.aspmx.l.google.com",
+        "alt2.aspmx.l.google.com",
+        "alt4.aspmx.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt1.aspmx.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c23270csi66834225ad.56 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c2323cbsi67939945ad.49 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d9443c01a7336-2985c2ad163si73881185ad.389 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt1.aspmx.l.google.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 3,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "tavia@kempenfelt.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "kempenfelt.com"
+    },
+    {
+      "email": "gregory@cacm.org",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain cacm.org",
+      "score": 0,
+      "domain": "cacm.org"
+    },
+    {
+      "email": "paul@lorenz.com",
+      "local_part": "paul",
+      "domain": "lorenz.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "lorenz-com.mail.protection.outlook.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 30,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "lorenz-com.mail.protection.outlook.com",
+          "target": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF0000013E.namprd02.prod.outlook.com 2025-11-17T12:36:46.869Z 08DE2458BB1A3802]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF0000013C.namprd02.prod.outlook.com 2025-11-17T12:36:46.746Z 08DE241C5DEAA49E]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.4.1 Recipient address rejected: Access denied. For more information see https://aka.ms/EXOSmtpErrors [CH2PEPF0000013E.namprd02.prod.outlook.com 2025-11-17T12:36:47.037Z 08DE2458BB1A388D]",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Microsoft",
+      "mx_record": "lorenz-com.mail.protection.outlook.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": true,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "mary@certifiedair.net",
+      "local_part": "mary",
+      "domain": "certifiedair.net",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "route1.mx.cloudflare.net",
+        "route2.mx.cloudflare.net",
+        "route3.mx.cloudflare.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": true,
+      "smtp_reason": "Accepts target AND random (catch-all)",
+      "score": 44,
+      "final_status": "invalid",
+      "notes": [
+        "Accepts target AND random (catch-all)",
+        "catch-all detected"
+      ],
+      "probe_details": [
+        {
+          "host": "route1.mx.cloudflare.net",
+          "target": {
+            "code": 250,
+            "message": "2.1.0 Ok",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 250,
+            "message": "2.1.0 Ok",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 250,
+            "message": "2.1.0 Ok",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Accepts target AND random (catch-all)",
+      "smtp_provider": "Other",
+      "mx_record": "route1.mx.cloudflare.net",
+      "free": false,
+      "role": false,
+      "accept_all": true,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        250,
+        250
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "rosemary@pendotech.com",
+      "local_part": "rosemary",
+      "domain": "pendotech.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mx1.hc1191-61.eu.iphmx.com",
+        "mx2.hc1191-61.eu.iphmx.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 59,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mx1.hc1191-61.eu.iphmx.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mx1.hc1191-61.eu.iphmx.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 8,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "alan@h3-media.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "h3-media.com"
+    }
+  ]
+}

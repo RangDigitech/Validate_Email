@@ -1,0 +1,668 @@
+{
+  "results": [
+    {
+      "email": "vatsalgurjar11@gmail.com",
+      "local_part": "vatsalgurjar11",
+      "domain": "gmail.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt4.gmail-smtp-in.l.google.com",
+        "alt3.gmail-smtp-in.l.google.com",
+        "alt1.gmail-smtp-in.l.google.com",
+        "gmail-smtp-in.l.google.com",
+        "alt2.gmail-smtp-in.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 100,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "alt4.gmail-smtp-in.l.google.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 OK 6a1803df08f44-8846e65d6c6si39650746d6.1266 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser af79cd13be357-8b3295ea66asi281026585a.1709 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e688dd4si34205556d6.1711 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt4.gmail-smtp-in.l.google.com",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 2,
+      "alphabetical_characters": 12,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "info.kalyanhospital@gmail.com",
+      "local_part": "info.kalyanhospital",
+      "domain": "gmail.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt4.gmail-smtp-in.l.google.com",
+        "alt3.gmail-smtp-in.l.google.com",
+        "alt1.gmail-smtp-in.l.google.com",
+        "gmail-smtp-in.l.google.com",
+        "alt2.gmail-smtp-in.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": true,
+      "catch_all": false,
+      "smtp_reason": "Target accepted, randoms rejected",
+      "score": 100,
+      "final_status": "valid",
+      "notes": [
+        "Target accepted, randoms rejected"
+      ],
+      "probe_details": [
+        {
+          "host": "alt4.gmail-smtp-in.l.google.com",
+          "target": {
+            "code": 250,
+            "message": "2.1.5 OK af79cd13be357-8b32932a3fesi292848085a.211 - gsmtp",
+            "accepted": true,
+            "perm": false,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e69ce9fsi35760006d6.1966 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e49b8b8si36042366d6.22 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Deliverable",
+      "reason": "ACCEPTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt4.gmail-smtp-in.l.google.com",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 18,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        250,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "orwyerqrqw@gmail.com",
+      "local_part": "orwyerqrqw",
+      "domain": "gmail.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt4.gmail-smtp-in.l.google.com",
+        "alt3.gmail-smtp-in.l.google.com",
+        "alt1.gmail-smtp-in.l.google.com",
+        "gmail-smtp-in.l.google.com",
+        "alt2.gmail-smtp-in.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 17,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt4.gmail-smtp-in.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d75a77b69052e-4ee48ee3474si33683831cf.1331 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d75a77b69052e-4ee48ec1253si31852611cf.1118 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e49f13csi33626586d6.348 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt4.gmail-smtp-in.l.google.com",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 10,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "alice@gmail.com",
+      "local_part": "alice",
+      "domain": "gmail.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt4.gmail-smtp-in.l.google.com",
+        "alt3.gmail-smtp-in.l.google.com",
+        "alt1.gmail-smtp-in.l.google.com",
+        "gmail-smtp-in.l.google.com",
+        "alt2.gmail-smtp-in.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 17,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt4.gmail-smtp-in.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e5f2dfdsi37042406d6.580 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e67af32si32873336d6.1566 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser af79cd13be357-8b329599dc8si269227185a.616 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt4.gmail-smtp-in.l.google.com",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 5,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "bob+test@gmail.com",
+      "local_part": "bob+test",
+      "domain": "gmail.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "alt4.gmail-smtp-in.l.google.com",
+        "alt3.gmail-smtp-in.l.google.com",
+        "alt1.gmail-smtp-in.l.google.com",
+        "gmail-smtp-in.l.google.com",
+        "alt2.gmail-smtp-in.l.google.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": false,
+      "catch_all": false,
+      "smtp_reason": "Hosts permanently rejected target",
+      "score": 17,
+      "final_status": "invalid",
+      "notes": [
+        "Hosts permanently rejected target",
+        "smtp rejected (permanent)"
+      ],
+      "probe_details": [
+        {
+          "host": "alt4.gmail-smtp-in.l.google.com",
+          "target": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d75a77b69052e-4ee48f002cesi31076341cf.1479 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random1": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser d75a77b69052e-4ee48ed71f5si33601741cf.1275 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          },
+          "random2": {
+            "code": 550,
+            "message": "5.1.1 The email account that you tried to reach does not exist. Please try\n5.1.1 double-checking the recipient's email address for typos or\n5.1.1 unnecessary spaces. For more information, go to\n5.1.1  https://support.google.com/mail/?p=NoSuchUser 6a1803df08f44-8846e66bc46si32713806d6.1403 - gsmtp",
+            "accepted": false,
+            "perm": true,
+            "temp": false,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "REJECTED EMAIL",
+      "smtp_provider": "Google",
+      "mx_record": "alt4.gmail-smtp-in.l.google.com",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": true,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [
+        550,
+        550,
+        550
+      ],
+      "probe_retries": 0
+    },
+    {
+      "email": "user@yahoo.com",
+      "local_part": "user",
+      "domain": "yahoo.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mta5.am0.yahoodns.net",
+        "mta6.am0.yahoodns.net",
+        "mta7.am0.yahoodns.net"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 58,
+      "final_status": "risky",
+      "notes": [
+        "Temporary errors (4xx/greylisting)"
+      ],
+      "probe_details": [
+        {
+          "host": "mta5.am0.yahoodns.net",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Risky",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Yahoo",
+      "mx_record": "mta5.am0.yahoodns.net",
+      "free": true,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "admin@yourdomain.test",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "No MX records",
+      "score": 0,
+      "domain": "yourdomain.test"
+    },
+    {
+      "email": "support@example.com",
+      "local_part": "support",
+      "domain": "example.com",
+      "syntax_ok": true,
+      "disposable": false,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "example.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": true,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 43,
+      "final_status": "invalid",
+      "notes": [
+        "Temporary errors (4xx/greylisting)",
+        "role-based mailbox"
+      ],
+      "probe_details": [
+        {
+          "host": "example.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "example.com",
+      "free": false,
+      "role": true,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 7,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": false,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    },
+    {
+      "email": "test@mailinator.com",
+      "local_part": "test",
+      "domain": "mailinator.com",
+      "syntax_ok": true,
+      "disposable": true,
+      "role_based": false,
+      "free_provider": false,
+      "mx_hosts": [
+        "mail.mailinator.com",
+        "mail2.mailinator.com"
+      ],
+      "mx_ok": true,
+      "implicit_mx_record": false,
+      "spf": false,
+      "dkim": false,
+      "dmarc": false,
+      "smtp_tested": true,
+      "smtp_ok": null,
+      "catch_all": null,
+      "smtp_reason": "Temporary errors (4xx/greylisting)",
+      "score": 24,
+      "final_status": "invalid",
+      "notes": [
+        "Temporary errors (4xx/greylisting)",
+        "disposable domain"
+      ],
+      "probe_details": [
+        {
+          "host": "mail.mailinator.com",
+          "target": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random1": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          },
+          "random2": {
+            "code": null,
+            "message": "connect_error:timed out",
+            "accepted": null,
+            "perm": false,
+            "temp": true,
+            "retries": 0
+          }
+        }
+      ],
+      "state": "Undeliverable",
+      "reason": "Temporary errors (4xx/greylisting)",
+      "smtp_provider": "Other",
+      "mx_record": "mail.mailinator.com",
+      "free": false,
+      "role": false,
+      "accept_all": false,
+      "tag": false,
+      "numerical_characters": 0,
+      "alphabetical_characters": 4,
+      "unicode_symbols": 0,
+      "mailbox_full": false,
+      "no_reply": false,
+      "secure_email_gateway": false,
+      "disposable_signals": {
+        "mx_keyword": true,
+        "asn_match": false,
+        "http_marker": false
+      },
+      "smtp_codes": [],
+      "probe_retries": 0
+    }
+  ]
+}

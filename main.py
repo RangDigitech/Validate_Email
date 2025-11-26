@@ -3,6 +3,7 @@ import json
 import uuid
 import tempfile
 import asyncio
+import time
 from datetime import datetime
 # main.py (extra imports)
 from typing import List
@@ -17,13 +18,17 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from json import loads as _json_loads
 import unicodedata
-
+from app import (
+    validate_single_optimized,  # Changed from validate_single_async
+    load_emails_from_file,
+    validate_many_async,
+    write_outputs
+)
 # Local module imports
 import models
 import schemas
 import security
 from database import SessionLocal, engine, get_db
-from app import validate_single_async, load_emails_from_csv, validate_many_async, write_outputs
 import os, secrets
 from urllib.parse import urlencode
 import httpx
@@ -43,16 +48,13 @@ from routes.contact import router as contact_router
 from blog_routes import router as blog_router
 import os, uuid
 from pathlib import Path
-from redis import Redis
-from rq import Queue
-# from queue_utils import init_job, job_status
-from tasks_rq import verify_chunk
-from fastapi import Path
 
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
-rconn = Redis.from_url(REDIS_URL)
-rq_bulk = Queue("bulk", connection=rconn)
+# from tasks_redis import start_bulk_job, get_job_status
+from tasks_redis import start_bulk_job, get_job_status
+
+JOBS_DATA_BASE = Path("jobs_data").resolve()
+
 CHUNK_SIZE_DEFAULT = 5000
 
 class _UserStatusIn(BaseModel):
@@ -72,8 +74,8 @@ def has_mx(domain: str) -> bool:
 
 load_dotenv() 
 
-FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
-# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
+# FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "https://rangdigitech.net").rstrip("/")
+FRONTEND_ORIGIN = os.getenv("OAUTH_FRONTEND_ORIGIN", "http://localhost:5173").rstrip("/")
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
 GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
@@ -140,37 +142,40 @@ async def contact_submit(payload: ContactIn, request: Request, db: Session = Dep
         "message": payload.message,
     }}
 
-async def verify_recaptcha_or_400(token: str, remote_ip: str | None = None):
-    """
-    Verify Google reCAPTCHA token. Raise 400 if invalid.
-    Set RECAPTCHA_DISABLED=1 in .env to bypass in local dev.
-    """
-    if RECAPTCHA_DISABLED:
-        return True
-    if not RECAPTCHA_SECRET:
-        raise HTTPException(status_code=500, detail="Server captcha is not configured")
-    if not token:
-        raise HTTPException(status_code=400, detail="Missing captcha token")
+# async def verify_recaptcha_or_400(token: str, remote_ip: str | None = None):
+#     """
+#     Verify Google reCAPTCHA token. Raise 400 if invalid.
+#     Set RECAPTCHA_DISABLED=1 in .env to bypass in local dev.
+#     """
+#     if RECAPTCHA_DISABLED:
+#         return True
+#     if not RECAPTCHA_SECRET:
+#         raise HTTPException(status_code=500, detail="Server captcha is not configured")
+#     if not token:
+#         raise HTTPException(status_code=400, detail="Missing captcha token")
 
-    try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            data = {
-                "secret": RECAPTCHA_SECRET,
-                "response": token
-            }
-            if remote_ip:
-                data["remoteip"] = remote_ip
-            r = await client.post("https://www.google.com/recaptcha/api/siteverify", data=data)
-            j = r.json()
-    except Exception:
-        raise HTTPException(status_code=400, detail="Captcha verification failed")
+#     try:
+#         async with httpx.AsyncClient(timeout=10) as client:
+#             data = {
+#                 "secret": RECAPTCHA_SECRET,
+#                 "response": token
+#             }
+#             if remote_ip:
+#                 data["remoteip"] = remote_ip
+#             r = await client.post("https://www.google.com/recaptcha/api/siteverify", data=data)
+#             j = r.json()
+#     except Exception:
+#         raise HTTPException(status_code=400, detail="Captcha verification failed")
 
-    if not j.get("success"):
-        # Optional: log j.get("error-codes")
-        raise HTTPException(status_code=400, detail="Invalid captcha")
-    return True
+#     if not j.get("success"):
+#         print("CAPTCHA RESPONSE DEBUG:", j)
+#         # Optional: log j.get("error-codes")
+#         raise HTTPException(status_code=400, detail="Invalid captcha")
+#     return True
 
 # --- LIGHTWEIGHT public email check (no auth, no credits)
+# main.py - REPLACE THE /utils/check-email ENDPOINT
+
 @app.get("/utils/check-email")
 async def utils_check_email(email: str):
     """
@@ -180,11 +185,13 @@ async def utils_check_email(email: str):
     - returns minimal flags for UI
     """
     try:
-        res = await validate_single_async(
+        # ✅ CHANGED: validate_single_async → validate_single_optimized
+        res = await validate_single_optimized(
             email=email,
             smtp_from="noreply@example.com",
-            db_path=None,
-            smtp_probe_flag=False,   # FAST: no SMTP handshake
+            smtp_flag=False,     # FAST: no SMTP handshake
+            mx_hosts=None,
+            implicit_mx=False
         )
         return {
             "ok": True,
@@ -199,7 +206,6 @@ async def utils_check_email(email: str):
             status_code=200,
             content={"ok": False, "error": str(ex), "disposable": None, "syntax_ok": None},
         )
-
 # --- HELPERS ---
 
 import re
@@ -292,7 +298,18 @@ def charge_credits(db: Session, user_id: int, units: int, kind: str, source: str
     """
     uc = ensure_user_credits(db, user_id)
     if uc.remaining_credits < units:
-        raise HTTPException(status_code=402, detail="Insufficient credits")
+        deficit = max(0, units - uc.remaining_credits)
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "error": "INSUFFICIENT_CREDITS",
+                "message": "Insufficient credits",
+                "credits_needed": units,
+                "credits_available": uc.remaining_credits,
+                "additional_credits_needed": deficit,
+                "kind": kind,
+            },
+        )
     uc.remaining_credits -= units
     uc.used_credits += units
     db.add(uc); db.commit()
@@ -302,11 +319,12 @@ def charge_credits(db: Session, user_id: int, units: int, kind: str, source: str
 def record_result(db: Session, user_id: int, res: dict) -> int:
     """Insert into email_verifications + upsert emails_checked. Returns verification id."""
     from json import dumps
-    email = (res.get("email") or "").strip()
+    email_raw = (res.get("email") or "").strip()
+    email_norm = normalize_email_addr(email_raw)
     domain = res.get("domain")
     ev = models.EmailVerification(
         user_id=user_id,
-        email=email,
+        email=email_raw,
         status=res.get("final_status"),
         state=res.get("state"),
         reason=res.get("reason"),
@@ -328,13 +346,13 @@ def record_result(db: Session, user_id: int, res: dict) -> int:
     # upsert into EmailsChecked
     ec = (
         db.query(models.EmailsChecked)
-        .filter(models.EmailsChecked.user_id == user_id, models.EmailsChecked.email == email)
+        .filter(models.EmailsChecked.user_id == user_id, models.EmailsChecked.email == email_norm)
         .first()
     )
     if not ec:
         ec = models.EmailsChecked(
             user_id=user_id,
-            email=email,
+            email=email_norm,
             total_checks=1,
             last_status=res.get("final_status"),
             last_score=res.get("score"),
@@ -556,8 +574,8 @@ async def login_for_access_token(request: Request, db: Session = Depends(get_db)
         password = (form.get("password") or "").strip()
 
         # NEW: verify captcha before any DB work
-        recaptcha_token = form.get("recaptcha_token") or ""
-        await verify_recaptcha_or_400(recaptcha_token, request.client.host if request.client else None)
+        # recaptcha_token = form.get("recaptcha_token") or ""
+        # await verify_recaptcha_or_400(recaptcha_token, request.client.host if request.client else None)
 
         if not email or not password:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email and password required")
@@ -579,6 +597,7 @@ async def login_for_access_token(request: Request, db: Session = Depends(get_db)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Login failed")
 
 # --- EMAIL VERIFICATION ENDPOINTS ---
+# main.py - REPLACE THE /validate-email ENDPOINT
 
 @app.post("/validate-email")
 async def single_email_validation(
@@ -596,8 +615,15 @@ async def single_email_validation(
         charge_credits(db, current_user.id, 1, kind="single", source=f"single:{norm_email}")
         credits_charged = 1
 
-    # Run verification (you can later add a cache shortcut if you want)
-    res = await validate_single_async(norm_email, "noreply@example.com", None, smtp)
+    # ✅ CHANGED: validate_single_async → validate_single_optimized
+    res = await validate_single_optimized(
+        email=norm_email,
+        smtp_from="noreply@example.com",
+        smtp_flag=smtp,
+        mx_hosts=None,       # Let it fetch MX records
+        implicit_mx=False
+    )
+    
     res["deliverable"] = (res.get("final_status") == "valid")
     res["state"] = res.get("state")
 
@@ -616,6 +642,110 @@ async def single_email_validation(
         "duplicate": already_checked
     }
 # --- REPLACE current /validate-file with an enqueueing version ---
+# @app.post("/validate-file")
+# async def file_validation_enqueued(
+#     file: UploadFile = File(...),
+#     smtp: bool = Form(False),
+#     workers: int = Form(12),
+#     name: str = Form(None),
+#     db: Session = Depends(get_db),
+#     current_user: models.User = Depends(security.get_current_user)
+# ):
+#     jobid = uuid.uuid4().hex
+
+#     tmp_input_path = os.path.join(tempfile.gettempdir(), f"{jobid}_{file.filename}")
+#     outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
+#     os.makedirs(outdir, exist_ok=True)
+
+#     with open(tmp_input_path, "wb") as f:
+#         content = await file.read()
+#         f.write(content)
+
+#     raw_emails = load_emails_from_csv(tmp_input_path)
+#     emails = [normalize_email_addr(e) for e in raw_emails if e]
+#     if not emails:
+#         raise HTTPException(status_code=400, detail="No emails found")
+
+#     # Credits (keep your logic)
+#     existing = get_existing_emails_set(db, current_user.id, emails)
+#     to_charge = [e for e in set(emails) if e not in existing]
+#     credits_to_charge = len(to_charge)
+#     if credits_to_charge > 0:
+#         charge_credits(db, current_user.id, credits_to_charge,
+#                        kind="bulk", source="POST /validate-file", ref=jobid)
+
+#     # Make bulk job record in DB
+#     job_name = (name or os.path.splitext(file.filename or "")[0] or f"Upload {datetime.utcnow().date()}")[:120]
+#     bulk_job = models.BulkJob(
+#         id=jobid,
+#         user_id=current_user.id,
+#         name=job_name,
+#         total_emails=len(emails),
+#     )
+#     db.add(bulk_job)
+#     db.commit()
+#     db.refresh(bulk_job)
+
+    # Process in background (no Redis needed!)
+    # Process in background (no Redis needed!) — start worker + progress logger
+  # ----- start background processing + progress logger -----
+    # chunk_size = int(os.getenv("BULK_CHUNK_SIZE", "5000"))
+
+    # # record start time & start background processing task
+    # start_time = time.time()
+    # # task = asyncio.create_task(
+    # #     process_bulk_async(
+    # #         jobid=jobid,
+    # #         emails=emails,
+    # #         smtp_flag=smtp,
+    # #         outdir=outdir,
+    # #         chunk_size=chunk_size
+    # #     )
+    # # )
+    # jobid = start_bulk_job(emails, smtp)
+
+    # # background progress logger (prints every 100 processed emails)
+    # async def _progress_logger():
+    #     next_log = 100
+    #     last_reported = 0
+    #     while True:
+    #         job = JobManager.get_job(jobid) or {}
+    #         done = int(job.get("done", 0))
+    #         total = int(job.get("total", len(emails)))
+    #         status = job.get("status", "queued")
+
+    #         # report every 100 processed emails
+    #         if done >= next_log and done != last_reported:
+    #             elapsed = time.time() - start_time
+    #             print(f"[{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}] Processed {done}/{total} emails — elapsed {elapsed:.1f}s")
+    #             last_reported = done
+    #             next_log += 100
+
+    #         # if finished or error, print final summary and exit logger
+    #         if status in ("finished", "error"):
+    #             elapsed = time.time() - start_time
+    #             print(f"[{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}] Job {jobid} finished — status={status} done={done}/{total} elapsed={elapsed:.1f}s")
+    #             break
+
+    #         # also stop if background task completed unexpectedly
+    #         if task.done():
+    #             job = JobManager.get_job(jobid) or {}
+    #             done = int(job.get("done", done))
+    #             status = job.get("status", status)
+    #             elapsed = time.time() - start_time
+    #             print(f"[{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}] Job {jobid} task done — status={status} done={done}/{total} elapsed={elapsed:.1f}s")
+    #             break
+
+    #         await asyncio.sleep(1)
+
+    # # start the logger (fire-and-forget)
+    # asyncio.create_task(_progress_logger())
+
+    # # return immediately so client sees jobid while background processing continues
+    # return {"jobid": jobid, "status": "processing"}
+    # jobid = start_bulk_job(emails, smtp)
+
+    # return {"jobid": jobid, "status": "queued"}
 @app.post("/validate-file")
 async def file_validation_enqueued(
     file: UploadFile = File(...),
@@ -627,28 +757,32 @@ async def file_validation_enqueued(
 ):
     jobid = uuid.uuid4().hex
 
+    # temp storage paths
     tmp_input_path = os.path.join(tempfile.gettempdir(), f"{jobid}_{file.filename}")
-    outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
+    outdir = f"jobs_data/{jobid}"
     os.makedirs(outdir, exist_ok=True)
 
+    # save file
     with open(tmp_input_path, "wb") as f:
-        content = await file.read()
-        f.write(content)
+        f.write(await file.read())
 
-    raw_emails = load_emails_from_csv(tmp_input_path)
+    # extract emails
+    raw_emails = load_emails_from_file(tmp_input_path)
     emails = [normalize_email_addr(e) for e in raw_emails if e]
     if not emails:
         raise HTTPException(status_code=400, detail="No emails found")
 
-    # Credits (keep your logic)
+    # credit calculation - check for duplicates before charging
     existing = get_existing_emails_set(db, current_user.id, emails)
     to_charge = [e for e in set(emails) if e not in existing]
+    duplicates_before_processing = len(set(emails)) - len(to_charge)
     credits_to_charge = len(to_charge)
+    
     if credits_to_charge > 0:
         charge_credits(db, current_user.id, credits_to_charge,
                        kind="bulk", source="POST /validate-file", ref=jobid)
 
-    # Make bulk job record
+    # store job metadata in DB
     job_name = (name or os.path.splitext(file.filename or "")[0] or f"Upload {datetime.utcnow().date()}")[:120]
     bulk_job = models.BulkJob(
         id=jobid,
@@ -657,85 +791,238 @@ async def file_validation_enqueued(
         total_emails=len(emails),
     )
     db.add(bulk_job)
-    db.commit(); db.refresh(bulk_job)
+    db.commit()
+    db.refresh(bulk_job)
 
-    # Chunk & enqueue
-    chunk_size = int(os.getenv("BULK_CHUNK_SIZE", CHUNK_SIZE_DEFAULT))
-    chunks = [emails[i:i+chunk_size] for i in range(0, len(emails), chunk_size)]
+    # ---- Redis queue: enqueue this bulk job ----
+    # Pass the existing jobid so DB and Redis use the same ID
+    start_bulk_job(emails, smtp, jobid=jobid)
 
-    # store a small progress JSON in Redis
-    rconn.hset(f"bulk:{jobid}", mapping={
-        "total": len(emails),
-        "done": 0,
-        "chunks": len(chunks),
+    return {
+        "jobid": jobid, 
         "status": "queued",
-        "outdir": outdir,
-        "smtp": "1" if smtp else "0",
-        "uid": str(current_user.id),
-    })
+        "total_emails": len(emails),
+        "duplicates_detected": duplicates_before_processing,
+        "credits_charged": credits_to_charge,
+        "note": f"Found {duplicates_before_processing} duplicate(s) before processing. Additional duplicates found during processing will be refunded automatically."
+    }
 
-    # for idx, chunk in enumerate(chunks):
-    #     rq_bulk.enqueue(
-    #         verify_chunk,
-    #         jobid,
-    #         idx,
-    #         chunk,
-    #         smtp,
-    #         current_user.id,
-    #         outdir,
-    #         job_timeout=3600,      # per-chunk timeout
-    #         result_ttl=86400,      # keep results for 1 day
-    #         failure_ttl=86400
-    #     )
 
-    # return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
+# @app.get("/bulk/status/{jobid}")
+# def bulk_status(jobid: str):
+#     """Get job status (no Redis)"""
+#     job_data = JobManager.get_job(jobid)
+    
+#     if not job_data:
+#         raise HTTPException(status_code=404, detail="Job not found")
+    
+#     total = job_data.get("total", 0)
+#     done = job_data.get("done", 0)
+    
+#     resp = {
+#         "jobid": jobid,
+#         "status": job_data.get("status", "queued"),
+#         "total": total,
+#         "done": done,
+#         "progress": (done / total) if total else 0.0,
+#         "chunks": job_data.get("chunks", 0),
+#     }
+    
+#     if "files" in job_data:
+#         resp["files"] = job_data["files"]
+    
+#     return resp
+@app.get("/bulk/status/{jobid}")
+def bulk_status(jobid: str):
+    job = get_job_status(jobid)   # ← use Redis JobManager
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
 
-    for idx, chunk in enumerate(chunks):
+    total = job.get("total", 0)
+    done = job.get("done", 0)
+
+    resp = {
+        "jobid": jobid,
+        "status": job.get("status", "queued"),
+        "total": total,
+        "done": done,
+        "progress": (done / total) if total else 0.0,
+        "chunks": job.get("chunks", 0),
+    }
+
+    if "files" in job:
+        resp["files"] = job["files"]
+    
+    # Add duplicate and refund information if available
+    if "duplicates" in job:
+        resp["duplicates"] = job.get("duplicates", 0)
+        resp["new_emails"] = job.get("new_emails", 0)
+        resp["total_processed"] = job.get("total_processed", done)
+        resp["refunded_credits"] = job.get("refunded_credits", 0)
+        resp["refund_success"] = job.get("refund_success", False)
+    
+    if "error" in job:
+        resp["error"] = job["error"]
+
+    return resp
+
+@app.get("/bulk/live/{jobid}")
+
+async def bulk_live(jobid: str):
+
+    """
+
+    Live-progress endpoint
+
+    Reads available chunk_*.json files and returns live totals.
+
+    Used for real-time donut chart updates.
+
+    """
+
+    job_dir = JOBS_DATA_BASE / jobid
+
+    if not job_dir.exists():
+
+        raise HTTPException(status_code=404, detail="Job not found")
+ 
+    # Find chunk files written so far
+
+    chunk_files = sorted(job_dir.glob("chunk_*.json"))
+ 
+    # Aggregate on-the-fly
+
+    counts = {
+
+        "deliverable": 0,
+
+        "undeliverable": 0,
+
+        "risky": 0,
+
+        "unknown": 0,
+
+        "processed": 0,
+
+    }
+ 
+    for chunk_file in chunk_files:
+
         try:
-            job = rq_bulk.enqueue(
-            verify_chunk,
-            jobid,
-            idx,
-            chunk,
-            smtp,
-            current_user.id,
-            outdir,
-            job_timeout=3600,      # per-chunk timeout
-            result_ttl=86400,
-            failure_ttl=86400
-            )
-        # ↓↓↓ add a strong trace so we know the API actually queued work
-            print(f"[BULK][ENQ] jobid={jobid} idx={idx} size={len(chunk)} rq_id={job.id}")
-        except Exception as e:
-        # fail visible: UI won’t hang at 0 with unknown cause
-            rconn.hset(f"bulk:{jobid}", mapping={"status": "error"})
-            print(f"[BULK][ENQ-FAIL] jobid={jobid} idx={idx} err={e}")
-            raise
-        return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
 
+            with open(chunk_file, "r", encoding="utf-8") as f:
+
+                items = json.load(f)
+ 
+            for r in items:
+
+                counts["processed"] += 1
+
+                state = (r.get("state") or "").lower()
+ 
+                if "deliver" in state:
+
+                    counts["deliverable"] += 1
+
+                elif "undeliver" in state:
+
+                    counts["undeliverable"] += 1
+
+                elif "risky" in state:
+
+                    counts["risky"] += 1
+
+                else:
+
+                    counts["unknown"] += 1
+ 
+        except Exception:
+
+            continue
+ 
+    # Get job total from Redis metadata
+
+    meta = get_job_status(jobid) or {}
+
+    total = meta.get("total", 0)
+
+    done = counts["processed"]
+ 
+    percent = (done / total * 100) if total else 0
+ 
+    return {
+
+        "jobid": jobid,
+
+        "total": total,
+
+        "done": done,
+
+        "percent": round(percent, 2),
+
+        "live_counts": counts,
+
+        "status": meta.get("status", "processing"),
+
+    }
+ 
 
 @app.get("/download/{jobid}/{name}")
 async def download_file(jobid: str, name: str):
-    key = f"bulk:{jobid}"
-    meta = rconn.hgetall(key)
-    if not meta:
-        raise HTTPException(status_code=404, detail="Job not found")
-
-    outdir = (meta.get(b"outdir") or b"").decode()
-    if not outdir:
-        outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
-
+    """
+    Serve files created by the worker under jobs_data/<jobid>/
+    Accepts only results.json and results.csv and defends against path traversal.
+    """
     if name not in ("results.csv", "results.json"):
         raise HTTPException(status_code=400, detail="Invalid filename.")
 
-    path = os.path.join(outdir, name)
-    if not os.path.exists(path):
+    # Build and sanitize path using pathlib
+    file_path = (JOBS_DATA_BASE / jobid / name).resolve()
+
+    # Protect against path traversal (ensure file_path is inside JOBS_DATA_BASE)
+    if not str(file_path).startswith(str(JOBS_DATA_BASE)):
+        raise HTTPException(status_code=400, detail="Invalid file path.")
+
+    if not file_path.exists() or not file_path.is_file():
         raise HTTPException(status_code=404, detail="File not found.")
 
-    media_type = "text/csv" if name.endswith(".csv") else "application/json"
-    return FileResponse(path, media_type=media_type, filename=name)
+    media_type = "text/csv" if file_path.suffix.lower() == ".csv" else "application/json"
+    # return with original filename (frontend can use it)
+    return FileResponse(str(file_path), media_type=media_type, filename=name)
 
-# --- NEW: CREDITS & RECENT EMAILS ENDPOINTS ---
+@app.get("/download/{jobid}/chunk/{chunk_name}")
+async def download_chunk(jobid: str, chunk_name: str):
+    """
+    Serve chunk_*.json files for live streaming.
+    """
+    if not chunk_name.startswith("chunk_") or not chunk_name.endswith(".json"):
+        raise HTTPException(status_code=400, detail="Invalid chunk filename.")
+ 
+    file_path = (JOBS_DATA_BASE / jobid / chunk_name).resolve()
+ 
+    if not str(file_path).startswith(str(JOBS_DATA_BASE)):
+        raise HTTPException(status_code=400, detail="Invalid file path.")
+ 
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Chunk not found.")
+ 
+    return FileResponse(str(file_path), media_type="application/json", filename=chunk_name)
+
+
+# @app.get("/download/{jobid}/{name}")
+# async def download_file(jobid: str, name: str):
+#     """Download results (no Redis)"""
+#     if name not in ("results.csv", "results.json"):
+#         raise HTTPException(status_code=400, detail="Invalid filename.")
+    
+#     outdir = os.path.join(tempfile.gettempdir(), f"results_{jobid}")
+#     path = os.path.join(outdir, name)
+    
+#     if not os.path.exists(path):
+#         raise HTTPException(status_code=404, detail="File not found.")
+    
+#     media_type = "text/csv" if name.endswith(".csv") else "application/json"
+#     return FileResponse(path, media_type=media_type, filename=name)
 
 @app.get("/me/credits")
 def get_credits(
@@ -830,7 +1117,10 @@ def get_bulk_job(
         if s in totals:
             totals[s] += 1
 
-    return {
+    # Get job status from JobManager for duplicate/refund info
+    job_status = get_job_status(jobid)
+    
+    response = {
         "id": job.id,
         "name": job.name,
         "total_emails": job.total_emails,
@@ -849,6 +1139,17 @@ def get_bulk_job(
             for v in ver_rows
         ],
     }
+    
+    # Add duplicate and refund information if available
+    if job_status:
+        if "duplicates" in job_status:
+            response["duplicates"] = job_status.get("duplicates", 0)
+            response["new_emails"] = job_status.get("new_emails", 0)
+            response["total_processed"] = job_status.get("total_processed", len(ver_rows))
+            response["refunded_credits"] = job_status.get("refunded_credits", 0)
+            response["refund_success"] = job_status.get("refund_success", False)
+    
+    return response
 
 @app.get("/verifications/{ver_id}")
 def get_verification(
@@ -1316,119 +1617,4 @@ def admin_deactivated_users(
 ):
     rows = db.query(models.User).where(models.User.is_active == False).all()
     return [{"id": u.id, "email": u.email} for u in rows]
-@app.post("/bulk/enqueue")
-async def bulk_enqueue(
-    file: UploadFile = File(...),
-    smtp: bool = Form(False),
-    workers: int = Form(12)
-):
-    jobs_dir = Path("./jobs")
-    jobs_dir.mkdir(parents=True, exist_ok=True)
 
-    jobid = str(uuid.uuid4())
-    upload_path = jobs_dir / f"{jobid}_{file.filename}"
-    with upload_path.open("wb") as f:
-        f.write(await file.read())
-
-    # Split into chunks and initialize progress
-    chunks = split_csv(str(upload_path))
-    # Quick count (header-aware)
-    total_rows = max(0, sum(1 for _ in upload_path.open(encoding="utf-8")) - 1)
-    init_job(jobid, total_rows=total_rows, chunk_count=len(chunks))
-
-    # Enqueue each chunk to RQ
-    for c in chunks:
-        rq_q.enqueue(
-            verify_chunk,
-            jobid,
-            c,
-            smtp,
-            workers,
-            job_timeout="8h",
-            result_ttl=86400,
-            failure_ttl=86400
-        )
-
-    return {"jobid": jobid, "chunks": len(chunks), "status": "queued"}
-
-# --- NEW: polling endpoint ---
-@app.get("/bulk/jobs/{jobid}")
-def bulk_job_status(jobid: str,
-    db: Session = Depends(get_db),
-    current_user: models.User = Depends(security.get_current_user)):
-
-    meta = rconn.hgetall(f"bulk:{jobid}")  # returns dict of bytes->bytes
-    if not meta:
-        # Optionally fall back to DB BulkJob presence
-        bj = db.query(models.BulkJob).filter(models.BulkJob.id==jobid,
-                    models.BulkJob.user_id==current_user.id).first()
-        if not bj:
-            raise HTTPException(404, "Bulk job not found")
-        return {"jobid": jobid, "status": "unknown"}  # or check DB only
-
-    meta = {k.decode(): v.decode() for k, v in meta.items()}
-    total = int(meta.get("total", "0"))
-    done = int(meta.get("done", "0"))
-    chunks = int(meta.get("chunks", "0"))
-    status = meta.get("status", "queued")
-    outdir = meta.get("outdir")
-
-    payload = {
-        "jobid": jobid,
-        "total": total,
-        "done": done,
-        "progress": (done / total) if total else 0.0,
-        "chunks": chunks,
-        "status": status,
-    }
-
-    # When done, expose download URLs (reuse your /download endpoint if you like)
-    if status == "finished":
-        payload["files"] = {
-            "results_json": f"/download/{jobid}/results.json",
-            "results_csv":  f"/download/{jobid}/results.csv",
-        }
-
-    return payload
-# main.py (add this endpoint)
-@app.get("/bulk/status/{jobid}")
-def bulk_status(jobid: str):
-    """
-    Returns progress for a bulk job from Redis:
-    {
-      jobid, status, total, done, progress, chunks,
-      files: { results_json, results_csv }  # when finished
-    }
-    """
-    key = f"bulk:{jobid}"
-    data = rconn.hgetall(key)
-    if not data:
-        raise HTTPException(status_code=404, detail="Job not found")
-
-    def _s(b): return b.decode() if isinstance(b, (bytes, bytearray)) else b
-    m = { _s(k): _s(v) for k, v in data.items() }
-
-    total  = int(m.get("total", "0") or 0)
-    done   = int(m.get("done", "0") or 0)
-    chunks = int(m.get("chunks", "0") or 0)
-    status = m.get("status", "queued")
-
-    resp = {
-        "jobid": jobid,
-        "status": status,
-        "total": total,
-        "done": done,
-        "progress": (done / total) if total else 0.0,
-        "chunks": chunks,
-    }
-
-    # files are stored as a JSON string in Redis; parse if present
-    if "files" in m and m["files"]:
-        try:
-            resp["files"] = json.loads(m["files"])
-        except Exception:
-            # if not JSON, still surface raw string
-            resp["files"] = m["files"]
-
-    return resp
-# add near your other bulk routes

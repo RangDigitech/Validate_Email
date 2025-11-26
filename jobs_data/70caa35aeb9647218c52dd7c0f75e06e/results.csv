@@ -1,0 +1,9 @@
+email,state,reason,final_status,score,syntax_ok,local_part,domain,mx_ok,mx_record,implicit_mx_record,mx_hosts,smtp_tested,smtp_ok,catch_all,smtp_reason,free,role,disposable,accept_all,tag,numerical_characters,alphabetical_characters,unicode_symbols,mailbox_full,no_reply,secure_email_gateway,smtp_provider,notes,probe_details,disposable_mx_keyword,disposable_asn_match,disposable_http_marker,smtp_codes,spf_policy,probe_retries
+info.kalyanhospital@gmail.com,Undeliverable,DNS timeout for domain gmail.com,invalid,0,,,gmail.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+orwyerqrqw@gmail.com,Undeliverable,DNS timeout for domain gmail.com,invalid,0,,,gmail.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+alice@gmail.com,Undeliverable,DNS timeout for domain gmail.com,invalid,0,,,gmail.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+bob+test@gmail.com,Undeliverable,DNS timeout for domain gmail.com,invalid,0,,,gmail.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+user@yahoo.com,Undeliverable,DNS timeout for domain yahoo.com,invalid,0,,,yahoo.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+admin@yourdomain.test,Undeliverable,DNS timeout for domain yourdomain.test,invalid,0,,,yourdomain.test,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+support@example.com,Undeliverable,DNS timeout for domain example.com,invalid,0,,,example.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0
+test@mailinator.com,Undeliverable,DNS timeout for domain mailinator.com,invalid,0,,,mailinator.com,,,,,,,,,,,,,,,,,,,,,,,0,0,0,,,0

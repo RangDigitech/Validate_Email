@@ -1,0 +1,68 @@
+{
+  "results": [
+    {
+      "email": "info.kalyanhospital@gmail.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain gmail.com",
+      "score": 0,
+      "domain": "gmail.com"
+    },
+    {
+      "email": "orwyerqrqw@gmail.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain gmail.com",
+      "score": 0,
+      "domain": "gmail.com"
+    },
+    {
+      "email": "alice@gmail.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain gmail.com",
+      "score": 0,
+      "domain": "gmail.com"
+    },
+    {
+      "email": "bob+test@gmail.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain gmail.com",
+      "score": 0,
+      "domain": "gmail.com"
+    },
+    {
+      "email": "user@yahoo.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain yahoo.com",
+      "score": 0,
+      "domain": "yahoo.com"
+    },
+    {
+      "email": "admin@yourdomain.test",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain yourdomain.test",
+      "score": 0,
+      "domain": "yourdomain.test"
+    },
+    {
+      "email": "support@example.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain example.com",
+      "score": 0,
+      "domain": "example.com"
+    },
+    {
+      "email": "test@mailinator.com",
+      "final_status": "invalid",
+      "state": "Undeliverable",
+      "reason": "DNS timeout for domain mailinator.com",
+      "score": 0,
+      "domain": "mailinator.com"
+    }
+  ]
+}
