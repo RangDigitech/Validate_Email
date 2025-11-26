@@ -15,7 +15,7 @@ from concurrent.futures import ProcessPoolExecutor
 from datetime import datetime
 import logging
 import re
-from app_optimized import validate_many_async, write_outputs, DNSTimeoutError
+from app import validate_many_async, write_outputs, DNSTimeoutError
 import dns.exception
 import time 
 import glob

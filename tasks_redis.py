@@ -50,7 +50,7 @@ from sqlalchemy.sql import func
 # If your project imports validate_many_async / write_outputs from
 # `app_optimized` in main.py, import from the same place here.
 try:
-    from app_optimized import validate_many_async, write_outputs
+    from app import validate_many_async, write_outputs
 except Exception:
     # fallback to app if you named it differently
     from app import validate_many_async, write_outputs
